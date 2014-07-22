@@ -1,7 +1,7 @@
 {
-  "name": "kurento-module-core",
+  "name": "kws-media-api-core",
   "version": "5.0.0",
-  "description": "",
+  "description": "Base classes for kurento media server api",
   "main": "lib/index.js",
   "author": "",
   "license": "LGPL",
