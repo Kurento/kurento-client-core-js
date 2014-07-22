@@ -1,0 +1,14 @@
+{
+  "name": "kurento-module-core",
+  "version": "5.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "author": "",
+  "license": "LGPL",
+  "dependencies": {
+    "inherits": "^2.0.1"
+  },
+  "peerDependencies": {
+    "kws-media-api": "^5.0.0-dev"
+  }
+}
