@@ -1,5 +1,5 @@
 {
-  "name": "kws-media-api-core",
+  "name": "kurento-client-core",
   "version": "5.0.0",
   "description": "Base classes for kurento media server api",
   "homepage": "http://www.kurento.com",
@@ -8,10 +8,10 @@
   "license": "LGPL",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Kurento/kws-media-api-core.git"
+    "url": "https://github.com/Kurento/kurento-client-core.git"
   },
   "bugs": {
-    "url": "https://github.com/Kurento/kws-media-api-core/issues",
+    "url": "https://github.com/Kurento/kurento-client-core/issues",
     "email": "info@kurento.com"
   },
   "keywords": [
