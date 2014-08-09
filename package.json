@@ -8,10 +8,10 @@
   "license": "LGPL",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Kurento/kurento-client-core.git"
+    "url": "Kurento/kurento-client-core-js"
   },
   "bugs": {
-    "url": "https://github.com/Kurento/kurento-client-core/issues",
+    "url": "Kurento/kurento-client-core-js/issues",
     "email": "info@kurento.com"
   },
   "keywords": [
@@ -23,9 +23,4 @@
     "WebRTC"
   ],
   "dependencies": {
-    "inherits": "^2.0.1"
-  },
-  "peerDependencies": {
-    "kurento-client": "^5.0.0-dev"
-  }
-}
+    "inherits": "^2.0.1"  }}
