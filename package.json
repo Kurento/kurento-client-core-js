@@ -1,17 +1,17 @@
 {
-  "name": "kurento-client-core",
+  "name": "kurento-module-core",
   "version": "5.0.0",
-  "description": "Base classes for kurento media server api",
+  "description": "",
   "homepage": "http://www.kurento.com",
   "main": "lib/index.js",
   "author": "Kurento <info@kurento.com> (http://kurento.org)",
   "license": "LGPL",
   "repository": {
     "type": "git",
-    "url": "Kurento/kurento-client-core-js"
+    "url": "Kurento/kurento-module-core-js"
   },
   "bugs": {
-    "url": "Kurento/kurento-client-core-js/issues",
+    "url": "Kurento/kurento-module-core-js/issues",
     "email": "info@kurento.com"
   },
   "keywords": [
@@ -23,4 +23,8 @@
     "WebRTC"
   ],
   "dependencies": {
-    "inherits": "^2.0.1"  }}
+    "inherits": "^2.0.1"  },
+  "peerDependencies": {
+    "kurento-client": "^5.0.0-dev"
+  }
+}
