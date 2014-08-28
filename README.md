@@ -2,9 +2,9 @@
 
 Copyright © 2013-2014 Kurento. Licensed under [LGPL License].
 
-kurento-module-core
+kurento-client-core
 ============
-
+Base classes for kurento media server api
 
 
 What is Kurento
@@ -43,7 +43,7 @@ Follow us on Twitter @[kurentoms].
 
 [KurentoImage]: https://avatars1.githubusercontent.com/u/5392839?s=120
 [LGPL License]: http://www.gnu.org/licenses/lgpl-2.1.html
-[GitHub Repository]: https://github.com/kurento/kurento-module-core
+[GitHub Repository]: https://github.com/kurento/kurento-client-core
 [GitHub Kurento Group]: https://github.com/kurento
 [website]: http://kurento.org
 [kurentoms]: http://twitter.com/kurentoms

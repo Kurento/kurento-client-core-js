@@ -1,15 +1,15 @@
 {
-  "name": "kurento-module-core",
-  "description": "",
+  "name": "kurento-client-core",
+  "description": "Base classes for kurento media server api",
   "homepage": "http://www.kurento.com",
-  "main": "dist/kurento-module-core.js",
+  "main": "dist/kurento-client-core.js",
   "authors": [
     "Kurento <info@kurento.com> (http://kurento.org)"
   ],
   "license": "LGPL",
   "repository": {
     "type": "git",
-    "url": "Kurento/kurento-module-core-js"
+    "url": "Kurento/kurento-client-core-js"
   },
   "keywords": [
     "API",
