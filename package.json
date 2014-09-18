@@ -2,24 +2,22 @@
   "name": "kurento-client-core",
   "version": "5.0.1-dev",
   "description": "Base classes for kurento media server api",
-  "homepage": "http://www.kurento.com",
   "main": "lib/index.js",
-  "author": "Kurento \u003cinfo@kurento.com\u003e (http://kurento.org)",
-  "license": "LGPL",
+  "keywords": [
+    "Kurento"
+  ],
   "repository": {
     "type": "git",
     "url": "Kurento/kurento-client-core-js"
   },
-  "bugs": {
-    "email": "kurento@googlegroups.com"
-  },
-  "keywords": [
-    "API",
-    "Kurento",
-    "WebRTC"
-  ],
   "dependencies": {
     "checktype": "^0.0.4",
     "inherits": "^2.0.1"
+  },
+  "license": "LGPL",
+  "homepage": "http://www.kurento.com",
+  "author": "Kurento <info@kurento.com> (http://kurento.org)",
+  "bugs": {
+    "email": "kurento@googlegroups.com"
   }
 }
