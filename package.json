@@ -4,7 +4,7 @@
   "description": "Base classes for kurento media server api",
   "homepage": "http://www.kurento.com",
   "main": "lib/index.js",
-  "author": "Kurento <info@kurento.com> (http://kurento.org)",
+  "author": "Kurento \u003cinfo@kurento.com\u003e (http://kurento.org)",
   "license": "LGPL",
   "repository": {
     "type": "git",
