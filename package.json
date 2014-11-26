@@ -10,9 +10,6 @@
     "type": "git",
     "url": "Kurento/kurento-client-core-js"
   },
-  "scripts": {
-    "prepublish": "grunt"
-  },
   "dependencies": {
     "inherits": "^2.0.1"
   },
@@ -24,9 +21,7 @@
     "grunt-contrib-clean": "~0.6.0",
     "grunt-jsdoc": "~0.5.7",
     "grunt-npm2bower-sync": "^0.4.0",
-    "grunt-path-check": "^0.9.3",
     "grunt-shell": "^1.1.1",
-    "kurento-client": "5.1.0-dev",
     "minifyify": "^4.4.0"
   },
   "license": "LGPL",
