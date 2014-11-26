@@ -21,8 +21,9 @@ module.exports = function(grunt)
   var pkg = grunt.file.readJSON('package.json');
 
   // Project configuration.
-  grunt.initConfig(pkg,
+  grunt.initConfig(
   {
+    pkg: pkg,
     bower:
     {
       TOKEN:      process.env.TOKEN,
@@ -61,17 +62,16 @@ module.exports = function(grunt)
           tasks: ['shell:kmd']
         }
       }
-    }.
+    },
 
     shell:
     {
       // Generate the Kurento Javascript client
       kmd: {
         command: [
-          'kurento-module-creator --delete',
-          '--templates node_modules/kurento-client/templates',
-          '--codegen ./lib'
-        ].join(' ')
+          'mkdir -p ./lib',
+          'kurento-module-creator --delete --templates node_modules/kurento-client/templates --rom ./src --codegen ./lib'
+        ].join('&&')
       },
 
       // Publish / update package info in Bower
@@ -182,7 +182,7 @@ module.exports = function(grunt)
   grunt.loadNpmTasks('grunt-shell');
 
   // Alias tasks
-  grunt.registerTask('default', ['clean', 'jsdoc', 'path-check:generate-txt',
+  grunt.registerTask('default', ['clean', 'jsdoc', 'path-check:generate plugin',
                                  'browserify', 'sync:bower']);
   grunt.registerTask('bower',   ['shell:bower']);
 };
