@@ -61,17 +61,18 @@ module.exports = function(grunt)
           tasks: ['shell:kmd']
         }
       }
-    }.
+    },
 
     shell:
     {
       // Generate the Kurento Javascript client
       kmd: {
         command: [
-          'kurento-module-creator --delete',
-          '--templates node_modules/kurento-client/templates',
-          '--codegen ./lib'
-        ].join(' ')
+          'mkdir -p ./lib',
+          'kurento-module-creator --delete'
+          +' --templates ../../templates'
+          +' --rom ./src --codegen ./lib'
+        ].join('&&')
       },
 
       // Publish / update package info in Bower
@@ -182,7 +183,7 @@ module.exports = function(grunt)
   grunt.loadNpmTasks('grunt-shell');
 
   // Alias tasks
-  grunt.registerTask('default', ['clean', 'jsdoc', 'path-check:generate-txt',
-                                 'browserify', 'sync:bower']);
-  grunt.registerTask('bower',   ['shell:bower']);
+  grunt.registerTask('generate', ['path-check:generate plugin', 'browserify']);
+  grunt.registerTask('default',  ['clean', 'jsdoc', 'generate', 'sync:bower']);
+  grunt.registerTask('bower',    ['shell:bower']);
 };
