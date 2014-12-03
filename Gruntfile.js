@@ -23,33 +23,10 @@ module.exports = function(grunt)
   // Project configuration.
   grunt.initConfig({
     pkg: pkg,
-    bower:
-    {
-      TOKEN:      process.env.TOKEN,
-      repository: 'Kurento/kurento-client-core-js'
-    },
-
     // Plugins configuration
     clean:
     {
-      'code': 'lib',
-      'browser': DIST_DIR,
-
-      'doc': '<%= jsdoc.all.dest %>'
-    },
-
-    // Generate documentation
-    jsdoc:
-    {
-      all:
-      {
-        src: [
-          'README.md',
-          'lib/**/*.js',
-          'test/*.js'
-        ],
-        dest: 'doc/jsdoc'
-      }
+      'code': 'lib'
     },
 
     // Check if Kurento Module Creator exists
@@ -73,117 +50,15 @@ module.exports = function(grunt)
           +' --templates ../../templates'
           +' --rom ./src --codegen ./lib'
         ].join('&&')
-      },
-
-      // Publish / update package info in Bower
-      bower: {
-        command: [
-          'curl -X DELETE "https://bower.herokuapp.com/packages/<%= pkg.name %>?auth_token=<%= bower.TOKEN %>"',
-          'node_modules/.bin/bower register <%= pkg.name %> <%= bower.repository %>',
-          'node_modules/.bin/bower cache clean'
-        ].join('&&')
       }
-    },
-
-    // Generate browser versions and mapping debug file
-    browserify:
-    {
-      options: {
-        external: ['kurento-client']
-      },
-
-      'require':
-      {
-        src:  '<%= pkg.main %>',
-        dest: DIST_DIR+'/<%= pkg.name %>_require.js'
-      },
-
-      'standalone':
-      {
-        src:  '<%= pkg.main %>',
-        dest: DIST_DIR+'/<%= pkg.name %>.js',
-
-        options: {
-          browserifyOptions: {
-            standalone: '<%= pkg.name %>',
-          }
-        }
-      },
-
-      'require minified':
-      {
-        src:  '<%= pkg.main %>',
-        dest: DIST_DIR+'/<%= pkg.name %>_require.min.js',
-
-        options:
-        {
-          browserifyOptions: {
-            debug: true
-          },
-          plugin: [
-            ['minifyify',
-             {
-               compressPath: DIST_DIR,
-               map: '<%= pkg.name %>.map'
-             }]
-          ]
-        }
-      },
-
-      'standalone minified':
-      {
-        src:  '<%= pkg.main %>',
-        dest: DIST_DIR+'/<%= pkg.name %>.min.js',
-
-        options:
-        {
-          browserifyOptions: {
-            debug: true,
-            standalone: '<%= pkg.name %>'
-          },
-          plugin: [
-            ['minifyify',
-             {
-               compressPath: DIST_DIR,
-               map: '<%= pkg.name %>.map',
-               output: DIST_DIR+'/<%= pkg.name %>.map'
-             }]
-          ]
-        }
-      }
-    },
-
-    // Generate bower.json file from package.json data
-    sync:
-    {
-      bower:
-      {
-        options:
-        {
-          sync: [
-            'name', 'description', 'license', 'keywords', 'homepage',
-            'repository'
-          ],
-          overrides: {
-            authors: (pkg.author ? [pkg.author] : []).concat(pkg.contributors || []),
-            ignore: ['doc/', 'lib/', 'Gruntfile.js', 'package.json'],
-            main: DIST_DIR+'/<%= pkg.name %>.js'
-          }
-        }
-      }
-    }
-  });
+    }  });
 
   // Load plugins
-  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-jsdoc');
-  grunt.loadNpmTasks('grunt-npm2bower-sync');
   grunt.loadNpmTasks('grunt-path-check');
   grunt.loadNpmTasks('grunt-shell');
 
+
   // Alias tasks
-  grunt.registerTask('generate', ['path-check:generate plugin', 'browserify']);
-  grunt.registerTask('default',  ['clean', 'jsdoc', 'generate', 'sync:bower']);
-  grunt.registerTask('bower',    ['shell:bower']);
+  grunt.registerTask('default', ['clean', 'path-check:generate plugin']);
 };
