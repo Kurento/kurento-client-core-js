@@ -13,11 +13,6 @@
   "scripts": {
     "prepublish": "node scripts/prepublish"
   },
-  "dependencies": {
-    "es6-promise": "^2.0.0",
-    "inherits": "^2.0.1",
-    "promisecallback": "^0.0.2"
-  },
   "devDependencies": {
     "grunt-contrib-clean": "~0.6.0",
     "grunt-path-check": "^0.9.3",

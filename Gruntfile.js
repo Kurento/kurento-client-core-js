@@ -23,6 +23,7 @@ module.exports = function(grunt)
   // Project configuration.
   grunt.initConfig({
     pkg: pkg,
+
     // Plugins configuration
     clean:
     {
@@ -51,13 +52,13 @@ module.exports = function(grunt)
           +' --rom ./src --codegen ./lib'
         ].join('&&')
       }
-    }  });
+    }
+  });
 
   // Load plugins
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-path-check');
   grunt.loadNpmTasks('grunt-shell');
-
 
   // Alias tasks
   grunt.registerTask('default', ['clean', 'path-check:generate plugin']);
