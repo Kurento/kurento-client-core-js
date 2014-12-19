@@ -251,6 +251,24 @@
       ]
     },
     {
+      "name": "BaseRtpEndpoint",
+      "doc": "Base class to manage common RTP features.",
+      "abstract": true,
+      "extends": "SdpEndpoint",
+      "properties": [
+        {
+          "name": "minVideoSendBandwidth",
+          "doc": "Minimum video bandwidth for sending.\n  Unit: kbps(kilobits per second).\n   0: unlimited.\n  Default value: 100",
+          "type": "int"
+        },
+        {
+          "name": "maxVideoSendBandwidth",
+          "doc": "Maximum video bandwidth for sending.\n  Unit: kbps(kilobits per second).\n   0: unlimited.\n  Default value: 500",
+          "type": "int"
+        }
+      ]
+    },
+    {
       "name": "MediaElement",
       "doc": "Basic building blocks of the media server, that can be interconnected through the API. A :rom:cls:`MediaElement` is a module that encapsulates a specific media capability. They can be connected to create media pipelines where those capabilities are applied, in sequence, to the stream going through the pipeline.\n\n   :rom:cls:`MediaElement` objects are classified by its supported media type (audio, video, etc.)",
       "abstract": true,
