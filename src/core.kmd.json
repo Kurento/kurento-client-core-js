@@ -144,6 +144,21 @@
       }
     },
     {
+      "name": "PassThrough",
+      "doc": "This :rom:cls:`MediaElement` that just passes media through",
+      "extends": "MediaElement",
+      "constructor": {
+        "params": [
+          {
+            "name": "mediaPipeline",
+            "doc": "the :rom:cls:`MediaPipeline` to which the element belongs",
+            "type": "MediaPipeline"
+          }
+        ],
+        "doc": "Builder for the :rom:cls:`PassThrough`"
+      }
+    },
+    {
       "name": "UriEndpoint",
       "doc": "Interface for endpoints the require a URI to work. An example of this, would be a :rom:cls:`PlayerEndpoint` whose URI property could be used to locate a file to stream",
       "abstract": true,
