@@ -22,7 +22,7 @@
         "nodeName": "kurento-client-core",
         "npmDescription": "Base classes for kurento media server api",
         "npmGit": "Kurento/kurento-client-core-js",
-        "npmVersion": "Kurento/kurento-client-core-js#develop"
+        "npmVersion": "Kurento/kurento-client-core-js#release-5.1"
       }
     },
     "implementation": {
