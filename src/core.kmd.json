@@ -98,6 +98,30 @@
           ],
           "name": "removeTag",
           "doc": "Remove the tag (key and value) associated to a tag"
+        },
+        {
+          "params": [
+            {
+              "name": "key",
+              "doc": "Tag key.",
+              "type": "String"
+            }
+          ],
+          "return": {
+            "type": "String",
+            "doc": "The value associated to the given key."
+          },
+          "name": "getTag",
+          "doc": "Returns the value associated to the given key."
+        },
+        {
+          "params": [],
+          "return": {
+            "type": "Tag[]",
+            "doc": "An array containing all pairs key-value associated to the MediaObject."
+          },
+          "name": "getTags",
+          "doc": "Returns all the MediaObject tags."
         }
       ],
       "events": [
@@ -636,6 +660,23 @@
         }
       ],
       "name": "ElementConnectionData"
+    },
+    {
+      "typeFormat": "REGISTER",
+      "properties": [
+        {
+          "name": "key",
+          "doc": "Tag key",
+          "type": "String"
+        },
+        {
+          "name": "value",
+          "doc": "Tag Value",
+          "type": "String"
+        }
+      ],
+      "name": "Tag",
+      "doc": "Pair key-value with info about a MediaObject"
     }
   ],
   "events": [
