@@ -1,14 +1,14 @@
 {
   "name": "core",
-  "version": "5.1.1-dev",
-  "kurentoVersion": "5.1.1-dev",
+  "version": "5.1.1",
+  "kurentoVersion": "5.1.1",
   "imports": [],
   "code": {
     "kmd": {
       "java": {
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kms-api-core",
-        "mavenVersion": "5.1.1-SNAPSHOT"
+        "mavenVersion": "5.1.1"
       }
     },
     "api": {
@@ -16,7 +16,7 @@
         "packageName": "org.kurento.client",
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kurento-client",
-        "mavenVersion": "5.1.1-SNAPSHOT"
+        "mavenVersion": "5.1.1"
       },
       "js": {
         "nodeName": "kurento-client-core",
