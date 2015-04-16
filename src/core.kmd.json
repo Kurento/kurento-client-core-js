@@ -362,6 +362,12 @@
           "name": "maxVideoSendBandwidth",
           "doc": "Maximum video bandwidth for sending.\n  Unit: kbps(kilobits per second).\n   0: unlimited.\n  Default value: 500",
           "type": "int"
+        },
+        {
+          "name": "mediaState",
+          "doc": "State of the media",
+          "type": "MediaState",
+          "readOnly": true
         }
       ],
       "methods": [
@@ -374,6 +380,9 @@
           "name": "getStats",
           "doc": "Provides statistics collected for this endpoint"
         }
+      ],
+      "events": [
+        "MediaStateChanged"
       ]
     },
     {
@@ -595,6 +604,15 @@
       ],
       "name": "ModuleInfo",
       "doc": "Description of a loaded modules"
+    },
+    {
+      "typeFormat": "ENUM",
+      "values": [
+        "DISCONNECTED",
+        "CONNECTED"
+      ],
+      "name": "MediaState",
+      "doc": "State of the media."
     },
     {
       "typeFormat": "ENUM",
@@ -1396,6 +1414,23 @@
       "extends": "RaiseBase",
       "name": "ObjectDestroyed",
       "doc": "Indicates that an object has been destroyed on the mediaserver"
+    },
+    {
+      "properties": [
+        {
+          "name": "oldState",
+          "doc": "The previous state",
+          "type": "MediaState"
+        },
+        {
+          "name": "newState",
+          "doc": "The new state",
+          "type": "MediaState"
+        }
+      ],
+      "extends": "Media",
+      "name": "MediaStateChanged",
+      "doc": "Indicates that the state of the media has changed"
     }
   ]
 }
