@@ -536,6 +536,17 @@
           },
           "name": "getGstreamerDot",
           "doc": "Returns a string in dot (graphviz) format that represents the gstreamer elements inside"
+        },
+        {
+          "params": [
+            {
+              "name": "bitrate",
+              "doc": "Configure the enconding media bitrate in kbps",
+              "type": "int"
+            }
+          ],
+          "name": "setOutputBitrate",
+          "doc": "Allows change the target bitrate for the media output, if the media is encoded using VP8 or H264. This method only works if it is called before the media starts to flow."
         }
       ]
     }
