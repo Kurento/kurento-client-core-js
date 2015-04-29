@@ -3,21 +3,15 @@
   "version": "6.0.0-dev",
   "description": "Base classes for kurento media server api",
   "main": "lib/index.js",
-  "keywords": [
-    "Kurento"
-  ],
   "repository": {
     "type": "git",
     "url": "Kurento/kurento-client-core-js"
   },
-  "scripts": {
-    "prepublish": "node scripts/prepublish"
-  },
-  "devDependencies": {
-    "grunt-contrib-clean": "~0.6.0",
-    "grunt-path-check": "^0.9.3",
-    "grunt-shell": "^1.1.2"
-  },
+  "keywords": [
+    "Kurento",
+    "module",
+    "plugin"
+  ],
   "license": "LGPL",
   "homepage": "http://www.kurento.com",
   "author": "Kurento <info@kurento.com> (http://kurento.org)",
