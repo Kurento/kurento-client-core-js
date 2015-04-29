@@ -20,6 +20,8 @@ module.exports = function(grunt)
 
   var pkg = grunt.file.readJSON('package.json');
 
+  const PKG_BROWSER = 'lib/browser.js';
+
   // Project configuration.
   grunt.initConfig({
     pkg: pkg,
