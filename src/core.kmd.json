@@ -548,6 +548,10 @@
           "name": "setOutputBitrate",
           "doc": "Allows change the target bitrate for the media output, if the media is encoded using VP8 or H264. This method only works if it is called before the media starts to flow."
         }
+      ],
+      "events": [
+        "ElementConnected",
+        "ElementDisconnected"
       ]
     }
   ],
@@ -1466,6 +1470,60 @@
       "extends": "Media",
       "name": "MediaStateChanged",
       "doc": "Indicates that the state of the media has changed"
+    },
+    {
+      "properties": [
+        {
+          "name": "sink",
+          "doc": "sink element in new connection",
+          "type": "MediaElement"
+        },
+        {
+          "name": "mediaType",
+          "doc": "Media type of the connection",
+          "type": "MediaType"
+        },
+        {
+          "name": "sourceMediaDescription",
+          "doc": "Description of the source media",
+          "type": "String"
+        },
+        {
+          "name": "sinkMediaDescription",
+          "doc": "Description of the sink media",
+          "type": "String"
+        }
+      ],
+      "extends": "Media",
+      "name": "ElementConnected",
+      "doc": "Indicates that an element has been connected to other"
+    },
+    {
+      "properties": [
+        {
+          "name": "sink",
+          "doc": "sink element in previous connection",
+          "type": "MediaElement"
+        },
+        {
+          "name": "mediaType",
+          "doc": "Media type of the previous connection",
+          "type": "MediaType"
+        },
+        {
+          "name": "sourceMediaDescription",
+          "doc": "Description of the source media",
+          "type": "String"
+        },
+        {
+          "name": "sinkMediaDescription",
+          "doc": "Description of the sink media",
+          "type": "String"
+        }
+      ],
+      "extends": "Media",
+      "name": "ElementDisconnected",
+      "doc": "Indicates that an element has been disconnected"
     }
   ]
 }
