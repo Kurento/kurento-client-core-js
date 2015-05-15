@@ -165,6 +165,23 @@
           "readOnly": true
         }
       ],
+      "methods": [
+        {
+          "params": [
+            {
+              "name": "moduleName",
+              "doc": "Name of the module to get its kmd file",
+              "type": "String"
+            }
+          ],
+          "return": {
+            "type": "String",
+            "doc": "The kmd file"
+          },
+          "name": "getKmd",
+          "doc": "Returns the kmd associated to a module"
+        }
+      ],
       "events": [
         "ObjectCreated",
         "ObjectDestroyed"
