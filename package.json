@@ -12,7 +12,7 @@
     "module",
     "plugin"
   ],
-  "license": "LGPL",
+  "license": "LGPL-2.1",
   "homepage": "http://www.kurento.com",
   "author": "Kurento <info@kurento.com> (http://kurento.org)",
   "bugs": {
