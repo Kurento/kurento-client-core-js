@@ -398,6 +398,12 @@
           "readOnly": true
         },
         {
+          "name": "connectionState",
+          "doc": "State of the connection",
+          "type": "ConnectionState",
+          "readOnly": true
+        },
+        {
           "name": "rembParams",
           "doc": "Parameters of the congestion control algorithm",
           "type": "RembParams"
@@ -415,7 +421,8 @@
         }
       ],
       "events": [
-        "MediaStateChanged"
+        "MediaStateChanged",
+        "ConnectionStateChanged"
       ]
     },
     {
@@ -661,6 +668,15 @@
       ],
       "name": "MediaState",
       "doc": "State of the media."
+    },
+    {
+      "typeFormat": "ENUM",
+      "values": [
+        "DISCONNECTED",
+        "CONNECTED"
+      ],
+      "name": "ConnectionState",
+      "doc": "State of the connection."
     },
     {
       "typeFormat": "ENUM",
@@ -1551,6 +1567,23 @@
       "extends": "Media",
       "name": "MediaStateChanged",
       "doc": "Indicates that the state of the media has changed"
+    },
+    {
+      "properties": [
+        {
+          "name": "oldState",
+          "doc": "The previous state",
+          "type": "ConnectionState"
+        },
+        {
+          "name": "newState",
+          "doc": "The new state",
+          "type": "ConnectionState"
+        }
+      ],
+      "extends": "Media",
+      "name": "ConnectionStateChanged",
+      "doc": "Indicates that the state of the connection has changed"
     },
     {
       "properties": [
