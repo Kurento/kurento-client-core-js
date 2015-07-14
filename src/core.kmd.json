@@ -420,7 +420,7 @@
             }
           ],
           "return": {
-            "type": "RTCStats<>",
+            "type": "Stats<>",
             "doc": "Delivers a successful result in the form of a RTC stats report. A RTC stats report represents a map between strings, identifying the inspected objects (RTCStats.id), and their corresponding RTCStats objects."
           },
           "name": "getStats",
@@ -837,7 +837,7 @@
         "localcandidate",
         "remotecandidate"
       ],
-      "name": "RTCStatsType",
+      "name": "StatsType",
       "doc": "The type of the object."
     },
     {
@@ -845,13 +845,13 @@
       "properties": [
         {
           "name": "id",
-          "doc": "A unique id that is associated with the object that was inspected to produce this RTCStats object.",
+          "doc": "A unique id that is associated with the object that was inspected to produce this Stats object.",
           "type": "String"
         },
         {
           "name": "type",
           "doc": "The type of this object.",
-          "type": "RTCStatsType"
+          "type": "StatsType"
         },
         {
           "name": "timestamp",
@@ -859,6 +859,13 @@
           "type": "double"
         }
       ],
+      "name": "Stats",
+      "doc": "A dictionary that represents the stats gathered."
+    },
+    {
+      "typeFormat": "REGISTER",
+      "extends": "Stats",
+      "properties": [],
       "name": "RTCStats",
       "doc": "An RTCStats dictionary represents the stats gathered."
     },
@@ -920,6 +927,16 @@
           "name": "remb",
           "doc": "The Receiver Estimated Maximum Bitrate (REMB). This metric is only valid for video.",
           "type": "int64"
+        },
+        {
+          "name": "packetsLost",
+          "doc": "Total number of RTP packets lost for this SSRC.",
+          "type": "int64"
+        },
+        {
+          "name": "fractionLost",
+          "doc": "The fraction packet loss reported for this SSRC.",
+          "type": "double"
         }
       ],
       "name": "RTCRTPStreamStats",
@@ -973,18 +990,8 @@
           "type": "int64"
         },
         {
-          "name": "packetsLost",
-          "doc": "Total number of RTP packets lost for this SSRC.",
-          "type": "int64"
-        },
-        {
           "name": "jitter",
           "doc": "Packet Jitter measured in seconds for this SSRC.",
-          "type": "double"
-        },
-        {
-          "name": "fractionLost",
-          "doc": "The fraction packet loss reported for this SSRC.",
           "type": "double"
         }
       ],
