@@ -1,14 +1,14 @@
 {
   "name": "core",
-  "version": "6.0.0",
-  "kurentoVersion": "6.0.0",
+  "version": "6.0.1-dev",
+  "kurentoVersion": "6.0.1-dev",
   "imports": [],
   "code": {
     "kmd": {
       "java": {
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kms-api-core",
-        "mavenVersion": "6.0.0"
+        "mavenVersion": "6.0.1-SNAPSHOT"
       }
     },
     "api": {
@@ -16,13 +16,13 @@
         "packageName": "org.kurento.client",
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kurento-client",
-        "mavenVersion": "6.0.0"
+        "mavenVersion": "6.0.1-SNAPSHOT"
       },
       "js": {
         "nodeName": "kurento-client-core",
         "npmDescription": "Base classes for kurento media server api",
         "npmGit": "Kurento/kurento-client-core-js",
-        "npmVersion": "6.0.0"
+        "npmVersion": "Kurento/kurento-client-core-js"
       }
     },
     "implementation": {
