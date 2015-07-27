@@ -279,6 +279,13 @@
         "params": [],
         "doc": "Create a :rom:cls:`MediaPipeline`"
       },
+      "properties": [
+        {
+          "name": "latencyStats",
+          "doc": "If statistics about pipeline latency are enabled for all mediaElements",
+          "type": "boolean"
+        }
+      ],
       "methods": [
         {
           "params": [
@@ -407,24 +414,6 @@
           "name": "rembParams",
           "doc": "Parameters of the congestion control algorithm",
           "type": "RembParams"
-        }
-      ],
-      "methods": [
-        {
-          "params": [
-            {
-              "name": "mediaType",
-              "doc": "One of :rom:attr:`MediaType.AUDIO` or :rom:attr:`MediaType.VIDEO`",
-              "type": "MediaType",
-              "optional": true
-            }
-          ],
-          "return": {
-            "type": "Stats<>",
-            "doc": "Delivers a successful result in the form of a RTC stats report. A RTC stats report represents a map between strings, identifying the inspected objects (RTCStats.id), and their corresponding RTCStats objects."
-          },
-          "name": "getStats",
-          "doc": "Provides statistics collected for this endpoint"
         }
       ],
       "events": [
@@ -588,6 +577,22 @@
           ],
           "name": "setOutputBitrate",
           "doc": "Allows change the target bitrate for the media output, if the media is encoded using VP8 or H264. This method only works if it is called before the media starts to flow."
+        },
+        {
+          "params": [
+            {
+              "name": "mediaType",
+              "doc": "One of :rom:attr:`MediaType.AUDIO` or :rom:attr:`MediaType.VIDEO`",
+              "type": "MediaType",
+              "optional": true
+            }
+          ],
+          "return": {
+            "type": "Stats<>",
+            "doc": "Delivers a successful result in the form of a RTC stats report. A RTC stats report represents a map between strings, identifying the inspected objects (RTCStats.id), and their corresponding RTCStats objects."
+          },
+          "name": "getStats",
+          "doc": "Provides statistics collected for this endpoint"
         }
       ],
       "events": [
