@@ -1,14 +1,14 @@
 {
   "name": "core",
-  "version": "6.0.1-dev",
-  "kurentoVersion": "6.0.1-dev",
+  "version": "6.1.0-dev",
+  "kurentoVersion": "6.1.0-dev",
   "imports": [],
   "code": {
     "kmd": {
       "java": {
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kms-api-core",
-        "mavenVersion": "6.0.1-SNAPSHOT"
+        "mavenVersion": "6.1.0-SNAPSHOT"
       }
     },
     "api": {
@@ -16,7 +16,7 @@
         "packageName": "org.kurento.client",
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kurento-client",
-        "mavenVersion": "6.0.1-SNAPSHOT"
+        "mavenVersion": "6.1.0-SNAPSHOT"
       },
       "js": {
         "nodeName": "kurento-client-core",
@@ -426,6 +426,18 @@
       "doc": "Basic building blocks of the media server, that can be interconnected through the API. A :rom:cls:`MediaElement` is a module that encapsulates a specific media capability. They can be connected to create media pipelines where those capabilities are applied, in sequence, to the stream going through the pipeline.\n\n   :rom:cls:`MediaElement` objects are classified by its supported media type (audio, video, etc.)",
       "abstract": true,
       "extends": "MediaObject",
+      "properties": [
+        {
+          "name": "minOuputBitrate",
+          "doc": "Minimum video bandwidth for transcoding.\n  Unit: bps(bits per second).\n  Default value: 0",
+          "type": "int"
+        },
+        {
+          "name": "maxOuputBitrate",
+          "doc": "Maximum video bandwidth for transcoding.\n  Unit: bps(bits per second).\n  Default value: MAXINT",
+          "type": "int"
+        }
+      ],
       "methods": [
         {
           "params": [
@@ -576,7 +588,7 @@
             }
           ],
           "name": "setOutputBitrate",
-          "doc": "Allows change the target bitrate for the media output, if the media is encoded using VP8 or H264. This method only works if it is called before the media starts to flow."
+          "doc": "@deprecated\nAllows change the target bitrate for the media output, if the media is encoded using VP8 or H264. This method only works if it is called before the media starts to flow."
         },
         {
           "params": [
