@@ -1,6 +1,6 @@
 {
   "name": "kurento-client-core",
-  "version": "6.1.1",
+  "version": "6.1.2-dev",
   "description": "Base classes for kurento media server api",
   "main": "lib/index.js",
   "repository": {
