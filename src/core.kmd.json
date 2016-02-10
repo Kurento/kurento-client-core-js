@@ -628,11 +628,57 @@
           },
           "name": "getStats",
           "doc": "Provides statistics collected for this endpoint"
+        },
+        {
+          "params": [
+            {
+              "name": "mediaType",
+              "doc": "One of :rom:attr:`MediaType.AUDIO` or :rom:attr:`MediaType.VIDEO`",
+              "type": "MediaType"
+            },
+            {
+              "name": "sinkMediaDescription",
+              "doc": "Description of the sink",
+              "type": "String",
+              "optional": true,
+              "defaultValue": "default"
+            }
+          ],
+          "return": {
+            "type": "boolean",
+            "doc": "TRUE if there is media, FALSE in other case"
+          },
+          "name": "isMediaFlowingIn",
+          "doc": "Returns if there is media flowing from the pipeline to the MediaElement through a pad"
+        },
+        {
+          "params": [
+            {
+              "name": "mediaType",
+              "doc": "One of :rom:attr:`MediaType.AUDIO` or :rom:attr:`MediaType.VIDEO`",
+              "type": "MediaType"
+            },
+            {
+              "name": "sourceMediaDescription",
+              "doc": "Description of the source",
+              "type": "String",
+              "optional": true,
+              "defaultValue": "default"
+            }
+          ],
+          "return": {
+            "type": "boolean",
+            "doc": "TRUE if there is media, FALSE in other case"
+          },
+          "name": "isMediaFlowingOut",
+          "doc": "Returns if there is media flowing from the MediaElement to the pipeline through a pad"
         }
       ],
       "events": [
         "ElementConnected",
-        "ElementDisconnected"
+        "ElementDisconnected",
+        "MediaFlowOutStateChange",
+        "MediaFlowInStateChange"
       ]
     }
   ],
@@ -721,6 +767,15 @@
         "CONNECTED"
       ],
       "name": "MediaState",
+      "doc": "State of the media."
+    },
+    {
+      "typeFormat": "ENUM",
+      "values": [
+        "FLOWING",
+        "NOT_FLOWING"
+      ],
+      "name": "MediaFlowState",
       "doc": "State of the media."
     },
     {
@@ -893,6 +948,28 @@
       "typeFormat": "REGISTER",
       "properties": [
         {
+          "name": "name",
+          "doc": "The pad name",
+          "type": "String"
+        },
+        {
+          "name": "type",
+          "doc": "Type of media stream",
+          "type": "MediaType"
+        },
+        {
+          "name": "avg",
+          "doc": "The average time that buffers take to get on the input pad of this element",
+          "type": "double"
+        }
+      ],
+      "name": "MediaLatencyStat",
+      "doc": "A dictionary that represents the stats gathered."
+    },
+    {
+      "typeFormat": "REGISTER",
+      "properties": [
+        {
           "name": "id",
           "doc": "A unique id that is associated with the object that was inspected to produce this Stats object.",
           "type": "String"
@@ -917,13 +994,18 @@
       "properties": [
         {
           "name": "inputAudioLatency",
-          "doc": "Audio average measured on the sink pad in nano seconds",
+          "doc": "@deprecated\nAudio average measured on the sink pad in nano seconds",
           "type": "double"
         },
         {
           "name": "inputVideoLatency",
-          "doc": "Video average measured on the sink pad in nano seconds",
+          "doc": "@deprecated\nVideo average measured on the sink pad in nano seconds",
           "type": "double"
+        },
+        {
+          "name": "inputLatency",
+          "doc": "The average time that buffers take to get on the input pads of this element in nano seconds",
+          "type": "MediaLatencyStat[]"
         }
       ],
       "name": "ElementStats",
@@ -935,13 +1017,18 @@
       "properties": [
         {
           "name": "audioE2ELatency",
-          "doc": "End-to-end audio latency measured in nano seconds",
+          "doc": "@deprecated\nEnd-to-end audio latency measured in nano seconds",
           "type": "double"
         },
         {
           "name": "videoE2ELatency",
-          "doc": "End-to-end video latency measured in nano seconds",
+          "doc": "@deprecated\nEnd-to-end video latency measured in nano seconds",
           "type": "double"
+        },
+        {
+          "name": "E2ELatency",
+          "doc": "The average end to end latency for each media stream measured in nano seconds",
+          "type": "MediaLatencyStat[]"
         }
       ],
       "name": "EndpointStats",
@@ -1696,6 +1783,50 @@
       "extends": "Media",
       "name": "ConnectionStateChanged",
       "doc": "Indicates that the state of the connection has changed"
+    },
+    {
+      "properties": [
+        {
+          "name": "state",
+          "doc": "Current media state",
+          "type": "MediaFlowState"
+        },
+        {
+          "name": "padName",
+          "doc": "Name of the pad which has media",
+          "type": "String"
+        },
+        {
+          "name": "mediaType",
+          "doc": "Type of media that is flowing",
+          "type": "MediaType"
+        }
+      ],
+      "extends": "Media",
+      "name": "MediaFlowOutStateChange",
+      "doc": "Indicates that the Media Element is sending data to the MediaPipeline"
+    },
+    {
+      "properties": [
+        {
+          "name": "state",
+          "doc": "Current media state",
+          "type": "MediaFlowState"
+        },
+        {
+          "name": "padName",
+          "doc": "Name of the pad which has media",
+          "type": "String"
+        },
+        {
+          "name": "mediaType",
+          "doc": "Type of media that is flowing",
+          "type": "MediaType"
+        }
+      ],
+      "extends": "Media",
+      "name": "MediaFlowInStateChange",
+      "doc": "Indicates that the Media Element is receiving media from the MediaPipeline"
     },
     {
       "properties": [
