@@ -289,6 +289,12 @@
           "doc": "The uri for this endpoint.",
           "type": "String",
           "final": true
+        },
+        {
+          "name": "state",
+          "doc": "State of the endpoint",
+          "type": "UriEndpointState",
+          "readOnly": true
         }
       ],
       "methods": [
@@ -302,6 +308,9 @@
           "name": "stop",
           "doc": "Stops the feed"
         }
+      ],
+      "events": [
+        "UriEndpointStateChanged"
       ]
     },
     {
@@ -708,6 +717,16 @@
     }
   ],
   "complexTypes": [
+    {
+      "typeFormat": "ENUM",
+      "values": [
+        "STOP",
+        "START",
+        "PAUSE"
+      ],
+      "name": "UriEndpointState",
+      "doc": "State of the endpoint"
+    },
     {
       "typeFormat": "REGISTER",
       "properties": [
@@ -1906,6 +1925,18 @@
       "extends": "Media",
       "name": "ElementDisconnected",
       "doc": "Indicates that an element has been disconnected from another"
+    },
+    {
+      "properties": [
+        {
+          "name": "state",
+          "doc": "the new state",
+          "type": "UriEndpointState"
+        }
+      ],
+      "extends": "Media",
+      "name": "UriEndpointStateChanged",
+      "doc": "Indicates the new state of the endpoint"
     }
   ]
 }
