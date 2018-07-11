@@ -1,14 +1,14 @@
 {
   "name": "core",
-  "version": "6.6.2-dev",
-  "kurentoVersion": "6.6.2-dev",
+  "version": "6.7.3-dev",
+  "kurentoVersion": "6.7.3-dev",
   "imports": [],
   "code": {
     "kmd": {
       "java": {
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kms-api-core",
-        "mavenVersion": "6.6.2-SNAPSHOT"
+        "mavenVersion": "6.7.3-SNAPSHOT"
       }
     },
     "api": {
@@ -16,7 +16,7 @@
         "packageName": "org.kurento.client",
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kurento-client",
-        "mavenVersion": "6.6.2-SNAPSHOT"
+        "mavenVersion": "6.7.3-SNAPSHOT"
       },
       "js": {
         "nodeName": "kurento-client-core",
@@ -470,7 +470,7 @@
     },
     {
       "name": "MediaElement",
-      "doc": "<p>This is the basic building block of the media server, that can be interconnected inside a pipeline. A :rom:cls:`MediaElement` is a module that encapsulates a specific media capability, and that is able to exchange media with other :rom:cls:`MediaElement`s through an internal element called pad.\n      </p>\n      <p>\n      A pad can be defined as an input or output interface. Input pads are called sinks, and it's where the media elements receive media from other media elements. Output interfaces are called sources, and it's the pad used by the media element to feed media to other media elements. There can be only one sink pad per media element. On the other hand, the number of source pads is unconstrained. This means that a certain media element can receive media only from one element at a time, while it can send media to many others. Pads are created on demand, when the connect method is invoked. When two media elements are connected, one media pad is created for each type of media connected. For example, if you connect AUDIO and VIDEO between two media elements, each one will need to create two new pads: one for AUDIO and one for VIDEO.\n      </p>\n      <p>\n      When media elements are connected, it can be case that the encoding used by the elements is not the same, and thus it needs to be transcoded. This is something that is handled transparently by the media elements internals. In practice, the user needs not be aware that the transcodification is taking place. However, this process has a toll in the form of a higher CPU load, so connecting media elements that need media encoded in different formats is something to consider as a high load operation.\n      </p>",
+      "doc": "<p>This is the basic building block of the media server, that can be interconnected inside a pipeline. A :rom:cls:`MediaElement` is a module that encapsulates a specific media capability, and that is able to exchange media with other :rom:cls:`MediaElement`s through an internal element called pad.\n      </p>\n      <p>\n      A pad can be defined as an input or output interface. Input pads are called sinks, and it's where the media elements receive media from other media elements. Output interfaces are called sources, and it's the pad used by the media element to feed media to other media elements. There can be only one sink pad per media element. On the other hand, the number of source pads is unconstrained. This means that a certain media element can receive media only from one element at a time, while it can send media to many others. Pads are created on demand, when the connect method is invoked. When two media elements are connected, one media pad is created for each type of media connected. For example, if you connect AUDIO and VIDEO between two media elements, each one will need to create two new pads: one for AUDIO and one for VIDEO.\n      </p>\n      <p>\n      When media elements are connected, it can be the case that the encoding required in both input and output pads is not the same, and thus it needs to be transcoded. This is something that is handled transparently by the MediaElement internals, but such transcoding has a toll in the form of a higher CPU load, so connecting MediaElements that need media encoded in different formats is something to consider as a high load operation. The event `MediaTranscodingStateChange` allows to inform the client application of whether media transcoding is being enabled or not inside any MediaElement object.\n      </p>",
       "abstract": true,
       "extends": "MediaObject",
       "properties": [
@@ -596,7 +596,7 @@
             }
           ],
           "name": "disconnect",
-          "doc": "Disconnectes two media elements. This will release the source pads of the source media element, and the sink pads of the sink media element."
+          "doc": "Disconnects two media elements. This will release the source pads of the source media element, and the sink pads of the sink media element."
         },
         {
           "params": [
@@ -706,13 +706,36 @@
           },
           "name": "isMediaFlowingOut",
           "doc": "This method indicates whether the media element is emitting media of a certain type. The media source pad can be identified individually, if needed. It is only supported for AUDIO and VIDEO types, raising a MEDIA_OBJECT_ILLEGAL_PARAM_ERROR otherwise. If the pad indicated does not exist, if will return false."
+        },
+        {
+          "params": [
+            {
+              "name": "mediaType",
+              "doc": "One of :rom:attr:`MediaType.AUDIO` or :rom:attr:`MediaType.VIDEO`",
+              "type": "MediaType"
+            },
+            {
+              "name": "binName",
+              "doc": "Internal name of the processing bin, as previously given by ``MediaTranscodingStateChange``.",
+              "type": "String",
+              "optional": true,
+              "defaultValue": "default"
+            }
+          ],
+          "return": {
+            "type": "boolean",
+            "doc": "TRUE if media is being transcoded, FALSE otherwise."
+          },
+          "name": "isMediaTranscoding",
+          "doc": "Indicates whether this media element is actively transcoding between input and output pads. This operation is only supported for AUDIO and VIDEO media types, raising a MEDIA_OBJECT_ILLEGAL_PARAM_ERROR otherwise.\n          The internal GStreamer processing bin can be indicated, if needed; if the bin doesn't exist, the return value will be FALSE."
         }
       ],
       "events": [
         "ElementConnected",
         "ElementDisconnected",
         "MediaFlowOutStateChange",
-        "MediaFlowInStateChange"
+        "MediaFlowInStateChange",
+        "MediaTranscodingStateChange"
       ]
     }
   ],
@@ -820,7 +843,16 @@
         "NOT_FLOWING"
       ],
       "name": "MediaFlowState",
-      "doc": "State of the media."
+      "doc": "Flowing state of the media."
+    },
+    {
+      "typeFormat": "ENUM",
+      "values": [
+        "TRANSCODING",
+        "NOT_TRANSCODING"
+      ],
+      "name": "MediaTranscodingState",
+      "doc": "Transcoding state for a media."
     },
     {
       "typeFormat": "ENUM",
@@ -1871,6 +1903,28 @@
       "extends": "Media",
       "name": "MediaFlowInStateChange",
       "doc": "Fired when the incoming media flow begins or ends. The event contains:\n      <ul>\n        <li>State: whether the endpoint is receiving media (FLOWING) or not (NOT_FLOWING).</li>\n        <li>padName. The name of the pad that changed state.</li>\n        <li>MediaType: The type of media flowing.</li>\n      </ul>"
+    },
+    {
+      "properties": [
+        {
+          "name": "state",
+          "doc": "Current transcoding state; either enabled or disabled.",
+          "type": "MediaTranscodingState"
+        },
+        {
+          "name": "binName",
+          "doc": "Name of the GStreamer bin which is processing the media.",
+          "type": "String"
+        },
+        {
+          "name": "mediaType",
+          "doc": "Type of media that is being processed; either audio or video.",
+          "type": "MediaType"
+        }
+      ],
+      "extends": "Media",
+      "name": "MediaTranscodingStateChange",
+      "doc": "Event fired when an incoming media begins and codec transcoding is either required or not."
     },
     {
       "properties": [
