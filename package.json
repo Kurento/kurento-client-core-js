@@ -2,10 +2,9 @@
   "name": "kurento-client-core",
   "version": "6.7.3-dev",
   "description": "JavaScript Client API for Kurento Media Server",
-  "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "Kurento/kurento-client-core-js"
+    "url": "https://github.com/Kurento/kurento-client-core-js.git"
   },
   "keywords": [
     "Kurento",
@@ -47,6 +46,7 @@
     "srtp",
     "rtsp"
   ],
+  "main": "lib/index.js",
   "homepage": "https://www.kurento.org",
   "license": "Apache-2.0",
   "author": "Kurento <openvidu@gmail.com> (https://www.kurento.org)",
