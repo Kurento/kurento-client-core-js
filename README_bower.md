@@ -13,7 +13,7 @@ kurento-client-core-bower
 This repository host the auto-generated JavaScript client for [Kurento]
 module "core" to be published in [Bower].
 
-Module "core" description: Base classes for kurento media server api
+Module "core" description: JavaScript Client API for Kurento Media Server
 
 What is Kurento
 ---------------

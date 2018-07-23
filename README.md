@@ -12,7 +12,7 @@ kurento-client-core-js
 
 This repository host the auto-generated JavaScript client for [Kurento] module "core".
 
-Module "core" description: Base classes for kurento media server api
+Module "core" description: JavaScript Client API for Kurento Media Server
 
 What is Kurento
 ---------------
