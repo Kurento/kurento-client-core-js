@@ -5,7 +5,7 @@
 
 [![][KurentoImage]][Kurento]
 
-Copyright ? 2013-2016 [Kurento]. Licensed under [Apache 2.0 License].
+Copyright © 2013-2016 [Kurento]. Licensed under [Apache 2.0 License].
 
 kurento-client-core-js
 ===============
