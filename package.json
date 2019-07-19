@@ -1,6 +1,6 @@
 {
   "name": "kurento-client-core",
-  "version": "6.11.0-dev",
+  "version": "6.11.0",
   "description": "JavaScript Client API for Kurento Media Server",
   "repository": {
     "type": "git",
