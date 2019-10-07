@@ -32,399 +32,6 @@
   },
   "remoteClasses": [
     {
-      "name": "MediaObject",
-      "doc": "<p>Base interface used to manage capabilities common to all Kurento elements. This includes both: :rom:cls:`MediaElement` and :rom:cls:`MediaPipeline`</p>\n      <h4>Properties</h4>\n      <ul>\n        <li><b>id</b>: unique identifier assigned to this <code>MediaObject</code> at instantiation time. :rom:cls:`MediaPipeline` IDs are generated with a GUID followed by suffix <code>_kurento.MediaPipeline</code>. :rom:cls:`MediaElement` IDs are also a GUID with suffix <code>_kurento.elemenType</code> and prefixed by parent's ID.\n          <blockquote>\n          <dl>\n            <dt><i>MediaPipeline ID example</i></dt>\n            <dd><code>907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline</code></dd>\n            <dt><i>MediaElement ID example</i></dt> <dd><code>907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline/403da25a-805b-4cf1-8c55-f190588e6c9b_kurento.WebRtcEndpoint</code></dd>\n          </dl>\n          </blockquote>\n        </li>\n        <li><b>name</b>: free text intended to provide a friendly name for this <code>MediaObject</code>. Its default value is the same as the ID.</li>\n        <li><b>tags</b>: key-value pairs intended for applications to associate metadata to this <code>MediaObject</code> instance.</li>\n      </ul>\n      <p>\n      <h4>Events</h4>\n      <ul>\n        <li>`ErrorEvent`: reports asynchronous error events. It is recommended to always subscribe a listener to this event, as regular error from the pipeline will be notified through it, instead of through an exception when invoking a method.</li>\n      </ul>\n      ",
-      "abstract": true,
-      "properties": [
-        {
-          "name": "mediaPipeline",
-          "doc": ":rom:cls:`MediaPipeline` to which this <code>MediaObject</code> belongs. It returns itself when invoked for a pipeline object.",
-          "type": "MediaPipeline",
-          "final": true
-        },
-        {
-          "name": "parent",
-          "doc": "parent of this <code>MediaObject</code>. The parent of a :rom:cls:`Hub` or a :rom:cls:`MediaElement` is its :rom:cls:`MediaPipeline`. A :rom:cls:`MediaPipeline` has no parent, so this property will be null.",
-          "type": "MediaObject",
-          "final": true
-        },
-        {
-          "name": "id",
-          "doc": "unique identifier of this <code>MediaObject</code>. It's a synthetic identifier composed by a GUID and <code>MediaObject</code> type. The ID is prefixed with the parent ID when the object has parent: <i>ID_parent/ID_media-object</i>.",
-          "type": "String",
-          "final": true
-        },
-        {
-          "name": "childs",
-          "doc": "@deprecated\n (Use children instead) children of this <code>MediaObject</code>.",
-          "type": "MediaObject[]",
-          "readOnly": true
-        },
-        {
-          "name": "children",
-          "doc": "children of this <code>MediaObject</code>.",
-          "type": "MediaObject[]",
-          "readOnly": true
-        },
-        {
-          "name": "name",
-          "doc": "this <code>MediaObject</code>'s name. This is just a comodity to simplify developers' life debugging, it is not used internally for indexing nor idenfiying the objects. By default, it's the object's ID.",
-          "type": "String"
-        },
-        {
-          "name": "sendTagsInEvents",
-          "doc": "flag activating or deactivating sending the element's tags in fired events.",
-          "type": "boolean"
-        },
-        {
-          "name": "creationTime",
-          "doc": "<code>MediaObject</code> creation time in seconds since Epoch.",
-          "type": "int",
-          "final": true
-        }
-      ],
-      "methods": [
-        {
-          "params": [
-            {
-              "name": "key",
-              "doc": "Tag name.",
-              "type": "String"
-            },
-            {
-              "name": "value",
-              "doc": "Value associated to this tag.",
-              "type": "String"
-            }
-          ],
-          "name": "addTag",
-          "doc": "Adds a new tag to this <code>MediaObject</code>. If the tag is already present, it changes the value."
-        },
-        {
-          "params": [
-            {
-              "name": "key",
-              "doc": "Tag name to be removed",
-              "type": "String"
-            }
-          ],
-          "name": "removeTag",
-          "doc": "Removes an existing tag. Exists silently with no error if tag is not defined."
-        },
-        {
-          "params": [
-            {
-              "name": "key",
-              "doc": "Tag key.",
-              "type": "String"
-            }
-          ],
-          "return": {
-            "type": "String",
-            "doc": "The value associated to the given key."
-          },
-          "name": "getTag",
-          "doc": "Returns the value of given tag, or MEDIA_OBJECT_TAG_KEY_NOT_FOUND if tag is not defined."
-        },
-        {
-          "params": [],
-          "return": {
-            "type": "Tag[]",
-            "doc": "An array containing all key-value pairs associated with this <code>MediaObject</code>."
-          },
-          "name": "getTags",
-          "doc": "Returns all tags attached to this <code>MediaObject</code>."
-        }
-      ],
-      "events": [
-        "Error"
-      ]
-    },
-    {
-      "name": "ServerManager",
-      "doc": "This is a standalone object for managing the MediaServer",
-      "abstract": true,
-      "extends": "MediaObject",
-      "properties": [
-        {
-          "name": "info",
-          "doc": "Server information, version, modules, factories, etc",
-          "type": "ServerInfo",
-          "readOnly": true
-        },
-        {
-          "name": "pipelines",
-          "doc": "All the pipelines available in the server",
-          "type": "MediaPipeline[]",
-          "readOnly": true
-        },
-        {
-          "name": "sessions",
-          "doc": "All active sessions in the server",
-          "type": "String[]",
-          "readOnly": true
-        },
-        {
-          "name": "metadata",
-          "doc": "Metadata stored in the server",
-          "type": "String",
-          "readOnly": true
-        }
-      ],
-      "methods": [
-        {
-          "params": [
-            {
-              "name": "moduleName",
-              "doc": "Name of the module to get its kmd file",
-              "type": "String"
-            }
-          ],
-          "return": {
-            "type": "String",
-            "doc": "The kmd file"
-          },
-          "name": "getKmd",
-          "doc": "Returns the kmd associated to a module"
-        },
-        {
-          "params": [],
-          "return": {
-            "type": "int64",
-            "doc": "The amount of KiB of memory being used"
-          },
-          "name": "getUsedMemory",
-          "doc": "Returns the amount of memory that the server is using in KiB"
-        }
-      ],
-      "events": [
-        "ObjectCreated",
-        "ObjectDestroyed"
-      ]
-    },
-    {
-      "name": "SessionEndpoint",
-      "doc": "All networked Endpoints that require to manage connection sessions with remote peers implement this interface.",
-      "abstract": true,
-      "extends": "Endpoint",
-      "events": [
-        "MediaSessionTerminated",
-        "MediaSessionStarted"
-      ]
-    },
-    {
-      "name": "Hub",
-      "doc": "A Hub is a routing :rom:cls:`MediaObject`. It connects several :rom:cls:`endpoints <Endpoint>` together",
-      "abstract": true,
-      "extends": "MediaObject",
-      "methods": [
-        {
-          "params": [
-            {
-              "name": "details",
-              "doc": "Details of graph",
-              "type": "GstreamerDotDetails",
-              "optional": true
-            }
-          ],
-          "return": {
-            "type": "String",
-            "doc": "The dot graph"
-          },
-          "name": "getGstreamerDot",
-          "doc": "Returns a string in dot (graphviz) format that represents the gstreamer elements inside the pipeline"
-        }
-      ]
-    },
-    {
-      "name": "Filter",
-      "doc": "Base interface for all filters. This is a certain type of :rom:cls:`MediaElement`, that processes media injected through its sinks, and delivers the outcome through its sources.",
-      "abstract": true,
-      "extends": "MediaElement"
-    },
-    {
-      "name": "Endpoint",
-      "doc": "Base interface for all end points. An Endpoint is a :rom:cls:`MediaElement`\nthat allow :term:`KMS` to interchange media contents with external systems,\nsupporting different transport protocols and mechanisms, such as :term:`RTP`,\n:term:`WebRTC`, :term:`HTTP`, ``file:/`` URLs... An ``Endpoint`` may\ncontain both sources and sinks for different media types, to provide\nbidirectional communication.",
-      "abstract": true,
-      "extends": "MediaElement"
-    },
-    {
-      "name": "HubPort",
-      "doc": "This :rom:cls:`MediaElement` specifies a connection with a :rom:cls:`Hub`",
-      "extends": "MediaElement",
-      "constructor": {
-        "params": [
-          {
-            "name": "hub",
-            "doc": ":rom:cls:`Hub` to which this port belongs",
-            "type": "Hub"
-          }
-        ],
-        "doc": "Creates a :rom:cls:`HubPort` for the given :rom:cls:`Hub`"
-      }
-    },
-    {
-      "name": "PassThrough",
-      "doc": "This :rom:cls:`MediaElement` that just passes media through",
-      "extends": "MediaElement",
-      "constructor": {
-        "params": [
-          {
-            "name": "mediaPipeline",
-            "doc": "the :rom:cls:`MediaPipeline` to which the element belongs",
-            "type": "MediaPipeline"
-          }
-        ],
-        "doc": "Builder for the :rom:cls:`PassThrough`"
-      }
-    },
-    {
-      "name": "UriEndpoint",
-      "doc": "Interface for endpoints the require a URI to work. An example of this, would be a :rom:cls:`PlayerEndpoint` whose URI property could be used to locate a file to stream",
-      "abstract": true,
-      "extends": "Endpoint",
-      "properties": [
-        {
-          "name": "uri",
-          "doc": "The uri for this endpoint.",
-          "type": "String",
-          "final": true
-        },
-        {
-          "name": "state",
-          "doc": "State of the endpoint",
-          "type": "UriEndpointState",
-          "readOnly": true
-        }
-      ],
-      "methods": [
-        {
-          "params": [],
-          "name": "pause",
-          "doc": "Pauses the feed"
-        },
-        {
-          "params": [],
-          "name": "stop",
-          "doc": "Stops the feed"
-        }
-      ],
-      "events": [
-        "UriEndpointStateChanged"
-      ]
-    },
-    {
-      "name": "MediaPipeline",
-      "doc": "A pipeline is a container for a collection of :rom:cls:`MediaElements<MediaElement>` and :rom:cls:`MediaMixers<MediaMixer>`. It offers the methods needed to control the creation and connection of elements inside a certain pipeline.",
-      "extends": "MediaObject",
-      "constructor": {
-        "params": [],
-        "doc": "Create a :rom:cls:`MediaPipeline`"
-      },
-      "properties": [
-        {
-          "name": "latencyStats",
-          "doc": "If statistics about pipeline latency are enabled for all mediaElements",
-          "type": "boolean"
-        }
-      ],
-      "methods": [
-        {
-          "params": [
-            {
-              "name": "details",
-              "doc": "Details of graph",
-              "type": "GstreamerDotDetails",
-              "optional": true
-            }
-          ],
-          "return": {
-            "type": "String",
-            "doc": "The dot graph"
-          },
-          "name": "getGstreamerDot",
-          "doc": "Returns a string in dot (graphviz) format that represents the gstreamer elements inside the pipeline"
-        }
-      ]
-    },
-    {
-      "name": "SdpEndpoint",
-      "doc": "This interface is implemented by Endpoints that require an SDP negotiation for the setup of a networked media session with remote peers. The API provides the following functionality:\n      <ul>\n        <li>Generate SDP offers.</li>\n        <li>Process SDP offers.</li>\n        <li>Configure SDP related params.</li>\n      </ul>\n      ",
-      "abstract": true,
-      "extends": "SessionEndpoint",
-      "properties": [
-        {
-          "name": "maxVideoRecvBandwidth",
-          "doc": " Maximum bandwidth for video reception, in kbps. The default value is 500. A value of 0 sets this as unconstrained. .. note:: This has to be set before the SDP is generated.",
-          "type": "int"
-        },
-        {
-          "name": "maxAudioRecvBandwidth",
-          "doc": " Maximum bandwidth for audio reception, in kbps. The default value is 500. A value of 0 sets this as leaves this unconstrained. .. note:: This has to be set before the SDP is generated.",
-          "type": "int"
-        }
-      ],
-      "methods": [
-        {
-          "params": [],
-          "return": {
-            "type": "String",
-            "doc": "The SDP offer."
-          },
-          "name": "generateOffer",
-          "doc": " Generates an SDP offer with  media capabilities of the Endpoint.\n          Exceptions\n          <ul>\n            <li>\n              SDP_END_POINT_ALREADY_NEGOTIATED If the endpoint is already negotiated.\n            </li>\n            <li>\n              SDP_END_POINT_GENERATE_OFFER_ERROR if the generated offer is empty. This is most likely due to an internal error.\n            </li>\n          </ul>"
-        },
-        {
-          "params": [
-            {
-              "name": "offer",
-              "doc": "SessionSpec offer from the remote User Agent",
-              "type": "String"
-            }
-          ],
-          "return": {
-            "type": "String",
-            "doc": "The chosen configuration from the ones stated in the SDP offer"
-          },
-          "name": "processOffer",
-          "doc": " Processes SDP offer of the remote peer, and generates an SDP answer based on the endpoint's capabilities. If no matching capabilities are found, the SDP will contain no codecs.\n          Exceptions\n          <ul>\n            <li>\n              SDP_PARSE_ERROR If the offer is empty or has errors.\n            </li>\n            <li>\n              SDP_END_POINT_ALREADY_NEGOTIATED If the endpoint is already negotiated.\n            </li>\n            <li>\n              SDP_END_POINT_PROCESS_OFFER_ERROR if the generated offer is empty. This is most likely due to an internal error.\n            </li>\n          </ul>"
-        },
-        {
-          "params": [
-            {
-              "name": "answer",
-              "doc": "SessionSpec answer from the remote User Agent",
-              "type": "String"
-            }
-          ],
-          "return": {
-            "type": "String",
-            "doc": "Updated SDP offer, based on the answer received."
-          },
-          "name": "processAnswer",
-          "doc": " Generates an SDP offer with  media capabilities of the Endpoint.\n          Exceptions\n          <ul>\n            <li>\n              SDP_PARSE_ERROR If the offer is empty or has errors.\n            </li>\n            <li>\n              SDP_END_POINT_ALREADY_NEGOTIATED If the endpoint is already negotiated.\n            </li>\n            <li>\n              SDP_END_POINT_PROCESS_ANSWER_ERROR if the result of processing the answer is an empty string. This is most likely due to an internal error.\n            </li>\n            <li>\n              SDP_END_POINT_NOT_OFFER_GENERATED If the method is invoked before the generateOffer method.\n            </li>\n          </ul>"
-        },
-        {
-          "params": [],
-          "return": {
-            "type": "String",
-            "doc": "The last agreed SessionSpec"
-          },
-          "name": "getLocalSessionDescriptor",
-          "doc": "This method returns the local SDP. The output depends on the negotiation stage:\n          <ul>\n            <li>\n              No offer has been generated: returns null.\n            </li>\n            <li>\n              Offer has been generated: return the SDP offer.\n            </li>\n            <li>\n              Offer has been generated and answer processed: retruns the agreed SDP.\n            </li>\n          </ul>"
-        },
-        {
-          "params": [],
-          "return": {
-            "type": "String",
-            "doc": "The last agreed User Agent session description"
-          },
-          "name": "getRemoteSessionDescriptor",
-          "doc": "This method returns the remote SDP. If the negotiation process is not complete, it will return NULL."
-        }
-      ]
-    },
-    {
       "name": "BaseRtpEndpoint",
       "doc": "This class extends from the SdpEndpoint, and handles RTP communications. All endpoints that rely on this network protocol, like the RTPEndpoint or the WebRtcEndpoint, inherit from this. The endpoint provides information about the connection state and the media state. These can be consulted at any time through the mediaState and the connectionState properties. It is also possible subscribe to events fired when these properties change.\n      <ul style='list-style-type:circle'>\n        <li>\n          ConnectionStateChangedEvent: This event is raised when the connection between two peers changes. It can have two values\n          <ul>\n            <li>CONNECTED</li>\n            <li>DISCONNECTED</li>\n          </ul>\n        </li>\n        <li>\n          MediaStateChangedEvent: Based on RTCP packet flow, this event provides more reliable information about the state of media flow. Since RTCP packets are not flowing at a constant rate (minimizing a browser with an RTCPeerConnection might affect this interval, for instance), there is a guard period of about 5s. This traduces in a period where there might be no media flowing, but the event hasn't been fired yet. Nevertheless, this is the most reliable and useful way of knowing what the state of media exchange is. Possible values are:\n          <ul>\n            <li>CONNECTED: There is an RTCP packet flow between peers.</li>\n            <li>DISCONNECTED: No RTCP packets have been received, or at least 5s have passed since the last packet arrived.</li>\n          </ul>\n        </li>\n      </ul>\n      Part of the bandwidth control of the video component of the media session is done here. The values of the properties described are in kbps.\n      <ul style='list-style-type:circle'>\n        <li>\n          Input bandwidth control mechanism: Configuration interval used to inform remote peer the range of bitrates that can be pushed into this BaseRtpEndpoint object.\n          <ul>\n            <li>\n              setMinVideoRecvBandwidth: sets min bitrate limits expected for the received video stream. This value is set to limit the lower value of REMB packages, if supported by the implementing class.\n            </li>\n          </ul>\n          Max values are announced in the SDP, while min values are set to limit the lower value of REMB packages. It follows that min values will only have effect in peers that support this control mechanism, such as Chrome.\n        </li>\n        <li>\n          Output bandwidth control mechanism: Configuration interval used to control bitrate of the output video stream sent to remote peer. It is important to keep in mind that pushed bitrate depends on network and remote peer capabilities. Remote peers can also announce bandwidth limitation in their SDPs (through the b=<modifier>:<value> tag).   Kurento will always enforce bitrate limitations specified by the remote peer over internal configurations.\n          <ul>\n            <li>\n              setMinVideoSendBandwidth: sets the minimum bitrate for video to be sent to remote peer. 0 is considered unconstrained.\n            </li>\n            <li>\n              setMaxVideoSendBandwidth: sets maximum bitrate limits for video sent to remote peer. 0 is considered unconstrained.\n            </li>\n          </ul>\n        </li>\n      </ul>\n      All bandwidth control parameters must be changed before the SDP negotiation takes place, and can't be changed afterwards.\n      </p>\n      ",
       "abstract": true,
@@ -467,6 +74,57 @@
         "MediaStateChanged",
         "ConnectionStateChanged"
       ]
+    },
+    {
+      "name": "Endpoint",
+      "doc": "Base interface for all end points. An Endpoint is a :rom:cls:`MediaElement`\nthat allow :term:`KMS` to interchange media contents with external systems,\nsupporting different transport protocols and mechanisms, such as :term:`RTP`,\n:term:`WebRTC`, :term:`HTTP`, ``file:/`` URLs... An ``Endpoint`` may\ncontain both sources and sinks for different media types, to provide\nbidirectional communication.",
+      "abstract": true,
+      "extends": "MediaElement"
+    },
+    {
+      "name": "Filter",
+      "doc": "Base interface for all filters. This is a certain type of :rom:cls:`MediaElement`, that processes media injected through its sinks, and delivers the outcome through its sources.",
+      "abstract": true,
+      "extends": "MediaElement"
+    },
+    {
+      "name": "Hub",
+      "doc": "A Hub is a routing :rom:cls:`MediaObject`. It connects several :rom:cls:`endpoints <Endpoint>` together",
+      "abstract": true,
+      "extends": "MediaObject",
+      "methods": [
+        {
+          "params": [
+            {
+              "name": "details",
+              "doc": "Details of graph",
+              "type": "GstreamerDotDetails",
+              "optional": true
+            }
+          ],
+          "return": {
+            "type": "String",
+            "doc": "The dot graph"
+          },
+          "name": "getGstreamerDot",
+          "doc": "Returns a string in dot (graphviz) format that represents the gstreamer elements inside the pipeline"
+        }
+      ]
+    },
+    {
+      "name": "HubPort",
+      "doc": "This :rom:cls:`MediaElement` specifies a connection with a :rom:cls:`Hub`",
+      "extends": "MediaElement",
+      "constructor": {
+        "params": [
+          {
+            "name": "hub",
+            "doc": ":rom:cls:`Hub` to which this port belongs",
+            "type": "Hub"
+          }
+        ],
+        "doc": "Creates a :rom:cls:`HubPort` for the given :rom:cls:`Hub`"
+      }
     },
     {
       "name": "MediaElement",
@@ -736,6 +394,348 @@
         "MediaFlowOutStateChange",
         "MediaFlowInStateChange",
         "MediaTranscodingStateChange"
+      ]
+    },
+    {
+      "name": "MediaObject",
+      "doc": "<p>Base interface used to manage capabilities common to all Kurento elements. This includes both: :rom:cls:`MediaElement` and :rom:cls:`MediaPipeline`</p>\n      <h4>Properties</h4>\n      <ul>\n        <li><b>id</b>: unique identifier assigned to this <code>MediaObject</code> at instantiation time. :rom:cls:`MediaPipeline` IDs are generated with a GUID followed by suffix <code>_kurento.MediaPipeline</code>. :rom:cls:`MediaElement` IDs are also a GUID with suffix <code>_kurento.elemenType</code> and prefixed by parent's ID.\n          <blockquote>\n          <dl>\n            <dt><i>MediaPipeline ID example</i></dt>\n            <dd><code>907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline</code></dd>\n            <dt><i>MediaElement ID example</i></dt> <dd><code>907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline/403da25a-805b-4cf1-8c55-f190588e6c9b_kurento.WebRtcEndpoint</code></dd>\n          </dl>\n          </blockquote>\n        </li>\n        <li><b>name</b>: free text intended to provide a friendly name for this <code>MediaObject</code>. Its default value is the same as the ID.</li>\n        <li><b>tags</b>: key-value pairs intended for applications to associate metadata to this <code>MediaObject</code> instance.</li>\n      </ul>\n      <p>\n      <h4>Events</h4>\n      <ul>\n        <li>`ErrorEvent`: reports asynchronous error events. It is recommended to always subscribe a listener to this event, as regular error from the pipeline will be notified through it, instead of through an exception when invoking a method.</li>\n      </ul>\n      ",
+      "abstract": true,
+      "properties": [
+        {
+          "name": "mediaPipeline",
+          "doc": ":rom:cls:`MediaPipeline` to which this <code>MediaObject</code> belongs. It returns itself when invoked for a pipeline object.",
+          "type": "MediaPipeline",
+          "final": true
+        },
+        {
+          "name": "parent",
+          "doc": "parent of this <code>MediaObject</code>. The parent of a :rom:cls:`Hub` or a :rom:cls:`MediaElement` is its :rom:cls:`MediaPipeline`. A :rom:cls:`MediaPipeline` has no parent, so this property will be null.",
+          "type": "MediaObject",
+          "final": true
+        },
+        {
+          "name": "id",
+          "doc": "unique identifier of this <code>MediaObject</code>. It's a synthetic identifier composed by a GUID and <code>MediaObject</code> type. The ID is prefixed with the parent ID when the object has parent: <i>ID_parent/ID_media-object</i>.",
+          "type": "String",
+          "final": true
+        },
+        {
+          "name": "childs",
+          "doc": "@deprecated\n (Use children instead) children of this <code>MediaObject</code>.",
+          "type": "MediaObject[]",
+          "readOnly": true
+        },
+        {
+          "name": "children",
+          "doc": "children of this <code>MediaObject</code>.",
+          "type": "MediaObject[]",
+          "readOnly": true
+        },
+        {
+          "name": "name",
+          "doc": "this <code>MediaObject</code>'s name. This is just a comodity to simplify developers' life debugging, it is not used internally for indexing nor idenfiying the objects. By default, it's the object's ID.",
+          "type": "String"
+        },
+        {
+          "name": "sendTagsInEvents",
+          "doc": "flag activating or deactivating sending the element's tags in fired events.",
+          "type": "boolean"
+        },
+        {
+          "name": "creationTime",
+          "doc": "<code>MediaObject</code> creation time in seconds since Epoch.",
+          "type": "int",
+          "final": true
+        }
+      ],
+      "methods": [
+        {
+          "params": [
+            {
+              "name": "key",
+              "doc": "Tag name.",
+              "type": "String"
+            },
+            {
+              "name": "value",
+              "doc": "Value associated to this tag.",
+              "type": "String"
+            }
+          ],
+          "name": "addTag",
+          "doc": "Adds a new tag to this <code>MediaObject</code>. If the tag is already present, it changes the value."
+        },
+        {
+          "params": [
+            {
+              "name": "key",
+              "doc": "Tag name to be removed",
+              "type": "String"
+            }
+          ],
+          "name": "removeTag",
+          "doc": "Removes an existing tag. Exists silently with no error if tag is not defined."
+        },
+        {
+          "params": [
+            {
+              "name": "key",
+              "doc": "Tag key.",
+              "type": "String"
+            }
+          ],
+          "return": {
+            "type": "String",
+            "doc": "The value associated to the given key."
+          },
+          "name": "getTag",
+          "doc": "Returns the value of given tag, or MEDIA_OBJECT_TAG_KEY_NOT_FOUND if tag is not defined."
+        },
+        {
+          "params": [],
+          "return": {
+            "type": "Tag[]",
+            "doc": "An array containing all key-value pairs associated with this <code>MediaObject</code>."
+          },
+          "name": "getTags",
+          "doc": "Returns all tags attached to this <code>MediaObject</code>."
+        }
+      ],
+      "events": [
+        "Error"
+      ]
+    },
+    {
+      "name": "MediaPipeline",
+      "doc": "A pipeline is a container for a collection of :rom:cls:`MediaElements<MediaElement>` and :rom:cls:`MediaMixers<MediaMixer>`. It offers the methods needed to control the creation and connection of elements inside a certain pipeline.",
+      "extends": "MediaObject",
+      "constructor": {
+        "params": [],
+        "doc": "Create a :rom:cls:`MediaPipeline`"
+      },
+      "properties": [
+        {
+          "name": "latencyStats",
+          "doc": "If statistics about pipeline latency are enabled for all mediaElements",
+          "type": "boolean"
+        }
+      ],
+      "methods": [
+        {
+          "params": [
+            {
+              "name": "details",
+              "doc": "Details of graph",
+              "type": "GstreamerDotDetails",
+              "optional": true
+            }
+          ],
+          "return": {
+            "type": "String",
+            "doc": "The dot graph"
+          },
+          "name": "getGstreamerDot",
+          "doc": "Returns a string in dot (graphviz) format that represents the gstreamer elements inside the pipeline"
+        }
+      ]
+    },
+    {
+      "name": "PassThrough",
+      "doc": "This :rom:cls:`MediaElement` that just passes media through",
+      "extends": "MediaElement",
+      "constructor": {
+        "params": [
+          {
+            "name": "mediaPipeline",
+            "doc": "the :rom:cls:`MediaPipeline` to which the element belongs",
+            "type": "MediaPipeline"
+          }
+        ],
+        "doc": "Builder for the :rom:cls:`PassThrough`"
+      }
+    },
+    {
+      "name": "SdpEndpoint",
+      "doc": "This interface is implemented by Endpoints that require an SDP negotiation for the setup of a networked media session with remote peers. The API provides the following functionality:\n      <ul>\n        <li>Generate SDP offers.</li>\n        <li>Process SDP offers.</li>\n        <li>Configure SDP related params.</li>\n      </ul>\n      ",
+      "abstract": true,
+      "extends": "SessionEndpoint",
+      "properties": [
+        {
+          "name": "maxVideoRecvBandwidth",
+          "doc": " Maximum bandwidth for video reception, in kbps. The default value is 500. A value of 0 sets this as unconstrained. .. note:: This has to be set before the SDP is generated.",
+          "type": "int"
+        },
+        {
+          "name": "maxAudioRecvBandwidth",
+          "doc": " Maximum bandwidth for audio reception, in kbps. The default value is 500. A value of 0 sets this as leaves this unconstrained. .. note:: This has to be set before the SDP is generated.",
+          "type": "int"
+        }
+      ],
+      "methods": [
+        {
+          "params": [],
+          "return": {
+            "type": "String",
+            "doc": "The SDP offer."
+          },
+          "name": "generateOffer",
+          "doc": " Generates an SDP offer with  media capabilities of the Endpoint.\n          Exceptions\n          <ul>\n            <li>\n              SDP_END_POINT_ALREADY_NEGOTIATED If the endpoint is already negotiated.\n            </li>\n            <li>\n              SDP_END_POINT_GENERATE_OFFER_ERROR if the generated offer is empty. This is most likely due to an internal error.\n            </li>\n          </ul>"
+        },
+        {
+          "params": [
+            {
+              "name": "offer",
+              "doc": "SessionSpec offer from the remote User Agent",
+              "type": "String"
+            }
+          ],
+          "return": {
+            "type": "String",
+            "doc": "The chosen configuration from the ones stated in the SDP offer"
+          },
+          "name": "processOffer",
+          "doc": " Processes SDP offer of the remote peer, and generates an SDP answer based on the endpoint's capabilities. If no matching capabilities are found, the SDP will contain no codecs.\n          Exceptions\n          <ul>\n            <li>\n              SDP_PARSE_ERROR If the offer is empty or has errors.\n            </li>\n            <li>\n              SDP_END_POINT_ALREADY_NEGOTIATED If the endpoint is already negotiated.\n            </li>\n            <li>\n              SDP_END_POINT_PROCESS_OFFER_ERROR if the generated offer is empty. This is most likely due to an internal error.\n            </li>\n          </ul>"
+        },
+        {
+          "params": [
+            {
+              "name": "answer",
+              "doc": "SessionSpec answer from the remote User Agent",
+              "type": "String"
+            }
+          ],
+          "return": {
+            "type": "String",
+            "doc": "Updated SDP offer, based on the answer received."
+          },
+          "name": "processAnswer",
+          "doc": " Generates an SDP offer with  media capabilities of the Endpoint.\n          Exceptions\n          <ul>\n            <li>\n              SDP_PARSE_ERROR If the offer is empty or has errors.\n            </li>\n            <li>\n              SDP_END_POINT_ALREADY_NEGOTIATED If the endpoint is already negotiated.\n            </li>\n            <li>\n              SDP_END_POINT_PROCESS_ANSWER_ERROR if the result of processing the answer is an empty string. This is most likely due to an internal error.\n            </li>\n            <li>\n              SDP_END_POINT_NOT_OFFER_GENERATED If the method is invoked before the generateOffer method.\n            </li>\n          </ul>"
+        },
+        {
+          "params": [],
+          "return": {
+            "type": "String",
+            "doc": "The last agreed SessionSpec"
+          },
+          "name": "getLocalSessionDescriptor",
+          "doc": "This method returns the local SDP. The output depends on the negotiation stage:\n          <ul>\n            <li>\n              No offer has been generated: returns null.\n            </li>\n            <li>\n              Offer has been generated: return the SDP offer.\n            </li>\n            <li>\n              Offer has been generated and answer processed: retruns the agreed SDP.\n            </li>\n          </ul>"
+        },
+        {
+          "params": [],
+          "return": {
+            "type": "String",
+            "doc": "The last agreed User Agent session description"
+          },
+          "name": "getRemoteSessionDescriptor",
+          "doc": "This method returns the remote SDP. If the negotiation process is not complete, it will return NULL."
+        }
+      ]
+    },
+    {
+      "name": "ServerManager",
+      "doc": "This is a standalone object for managing the MediaServer",
+      "abstract": true,
+      "extends": "MediaObject",
+      "properties": [
+        {
+          "name": "info",
+          "doc": "Server information, version, modules, factories, etc",
+          "type": "ServerInfo",
+          "readOnly": true
+        },
+        {
+          "name": "pipelines",
+          "doc": "All the pipelines available in the server",
+          "type": "MediaPipeline[]",
+          "readOnly": true
+        },
+        {
+          "name": "sessions",
+          "doc": "All active sessions in the server",
+          "type": "String[]",
+          "readOnly": true
+        },
+        {
+          "name": "metadata",
+          "doc": "Metadata stored in the server",
+          "type": "String",
+          "readOnly": true
+        }
+      ],
+      "methods": [
+        {
+          "params": [
+            {
+              "name": "moduleName",
+              "doc": "Name of the module to get its kmd file",
+              "type": "String"
+            }
+          ],
+          "return": {
+            "type": "String",
+            "doc": "The kmd file"
+          },
+          "name": "getKmd",
+          "doc": "Returns the kmd associated to a module"
+        },
+        {
+          "params": [],
+          "return": {
+            "type": "int64",
+            "doc": "The amount of KiB of memory being used"
+          },
+          "name": "getUsedMemory",
+          "doc": "Returns the amount of memory that the server is using in KiB"
+        }
+      ],
+      "events": [
+        "ObjectCreated",
+        "ObjectDestroyed"
+      ]
+    },
+    {
+      "name": "SessionEndpoint",
+      "doc": "All networked Endpoints that require to manage connection sessions with remote peers implement this interface.",
+      "abstract": true,
+      "extends": "Endpoint",
+      "events": [
+        "MediaSessionTerminated",
+        "MediaSessionStarted"
+      ]
+    },
+    {
+      "name": "UriEndpoint",
+      "doc": "Interface for endpoints the require a URI to work. An example of this, would be a :rom:cls:`PlayerEndpoint` whose URI property could be used to locate a file to stream",
+      "abstract": true,
+      "extends": "Endpoint",
+      "properties": [
+        {
+          "name": "uri",
+          "doc": "The uri for this endpoint.",
+          "type": "String",
+          "final": true
+        },
+        {
+          "name": "state",
+          "doc": "State of the endpoint",
+          "type": "UriEndpointState",
+          "readOnly": true
+        }
+      ],
+      "methods": [
+        {
+          "params": [],
+          "name": "pause",
+          "doc": "Pauses the feed"
+        },
+        {
+          "params": [],
+          "name": "stop",
+          "doc": "Stops the feed"
+        }
+      ],
+      "events": [
+        "UriEndpointStateChanged"
       ]
     }
   ],
