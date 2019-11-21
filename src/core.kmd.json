@@ -65,6 +65,11 @@
           "readOnly": true
         },
         {
+          "name": "mtu",
+          "doc": "Maximum Transmission Unit (MTU) used for RTP.\n<p>\n  This setting affects the maximum size that will be used by RTP payloads. You\n  can change it from the default, if you think that a different value would be\n  beneficial for the typical network settings of your application.\n</p>\n<p>\n  The default value is 1200 Bytes. This is the same as in <b>libwebrtc</b> (from\n  webrtc.org), as used by `Firefox\n  <https://dxr.mozilla.org/mozilla-central/rev/b5c5ba07d3dbd0d07b66fa42a103f4df2c27d3a2/media/webrtc/trunk/webrtc/media/engine/constants.cc#16>`__\n  or `Chrome\n  <https://codesearch.chromium.org/chromium/src/third_party/webrtc/media/engine/constants.cc?l=15&rcl=6dd488b2e55125644263e4837f1abd950d5e410d>`__.\n  You can read more about this value in `Why RTP max packet size is 1200 in\n  WebRTC?\n  <https://groups.google.com/d/topic/discuss-webrtc/gH5ysR3SoZI/discussion>`__.\n</p>\n<p>\n  <b>WARNING</b>: Change this value ONLY if you really know what you are doing\n  and you have strong reasons to do so. Do NOT change this parameter just\n  because it <i>seems</i> to work better for some reduced scope tests. The\n  default value is a consensus chosen by people who have deep knowledge about\n  network optimization.\n</p>\n<ul>\n  <li>Unit: Bytes.</li>\n  <li>Default: 1200.</li>\n</ul>\n          ",
+          "type": "int"
+        },
+        {
           "name": "rembParams",
           "doc": "Advanced parameters to configure the congestion control algorithm.",
           "type": "RembParams"
