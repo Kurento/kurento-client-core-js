@@ -561,7 +561,7 @@
     },
     {
       "name": "SdpEndpoint",
-      "doc": "Interface implemented by Endpoints that require an SDP negotiation for the setup\nof a networked media session with remote peers.\n<p>The API provides the following functionality:</p>\n<ul>\n  <li>Generate SDP offers.</li>\n  <li>Process SDP offers.</li>\n  <li>Configure SDP related params.</li>\n</ul>\n      ",
+      "doc": "Interface implemented by Endpoints that require an SDP Offer/Answer negotiation in order to configure a media session.\n<p>Functionality provided by this API:</p>\n<ul>\n  <li>Generate SDP offers.</li>\n  <li>Process SDP offers.</li>\n  <li>Configure SDP related params.</li>\n</ul>\n      ",
       "abstract": true,
       "extends": "SessionEndpoint",
       "properties": [
@@ -578,7 +578,14 @@
       ],
       "methods": [
         {
-          "params": [],
+          "params": [
+            {
+              "name": "options",
+              "doc": "An <code>OfferOptions</code> providing options requested for the offer.",
+              "type": "OfferOptions",
+              "optional": true
+            }
+          ],
           "return": {
             "type": "String",
             "doc": "The SDP offer."
@@ -1767,6 +1774,27 @@
       ],
       "name": "RembParams",
       "doc": "Defines values for parameters of congestion control"
+    },
+    {
+      "typeFormat": "REGISTER",
+      "properties": [
+        {
+          "name": "offerToReceiveAudio",
+          "doc": "Whether or not to offer to the remote peer the opportunity to send audio.",
+          "type": "boolean",
+          "optional": true,
+          "defaultValue": true
+        },
+        {
+          "name": "offerToReceiveVideo",
+          "doc": "Whether or not to offer to the remote peer the opportunity to send video.",
+          "type": "boolean",
+          "optional": true,
+          "defaultValue": true
+        }
+      ],
+      "name": "OfferOptions",
+      "doc": "Used to customize the offer created by <code>SdpEndpoint.generateOffer</code>."
     }
   ],
   "events": [
