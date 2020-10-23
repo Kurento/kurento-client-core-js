@@ -270,7 +270,7 @@
             }
           ],
           "name": "setAudioFormat",
-          "doc": "Sets the type of data for the audio stream.\n<p>\n  MediaElements that do not support configuration of audio capabilities will\n  throw a MEDIA_OBJECT_ILLEGAL_PARAM_ERROR exception.\n</p>\n          "
+          "doc": "Set the type of data for the audio stream.\n<p>\n  MediaElements that do not support configuration of audio capabilities will\n  throw a MEDIA_OBJECT_ILLEGAL_PARAM_ERROR exception.\n</p>\n<p>\n  NOTE: This method is not implemented yet by the Media Server to do anything\n  useful.\n</p>\n          "
         },
         {
           "params": [
@@ -281,7 +281,7 @@
             }
           ],
           "name": "setVideoFormat",
-          "doc": "Sets the type of data for the video stream.\n<p>\n  MediaElements that do not support configuration of video capabilities will\n  throw a MEDIA_OBJECT_ILLEGAL_PARAM_ERROR exception\n</p>\n          "
+          "doc": "Set the type of data for the video stream.\n<p>\n  MediaElements that do not support configuration of video capabilities will\n  throw a MEDIA_OBJECT_ILLEGAL_PARAM_ERROR exception\n</p>\n<p>\n  NOTE: This method is not implemented yet by the Media Server to do anything\n  useful.\n</p>\n          "
         },
         {
           "params": [
