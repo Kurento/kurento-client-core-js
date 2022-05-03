@@ -33,7 +33,7 @@
   "remoteClasses": [
     {
       "name": "BaseRtpEndpoint",
-      "doc": "Handles RTP communications.\n<p>\n  All endpoints that rely on the RTP protocol, like the\n  <strong>RtpEndpoint</strong> or the <strong>WebRtcEndpoint</strong>, inherit\n  from this class. The endpoint provides information about the connection state\n  and the media state, which can be consulted at any time through the\n  :rom:attr:`mediaState` and the :rom:attr:`connectionState` properties. It is\n  also possible subscribe to events fired when these properties change.\n</p>\n<ul>\n  <li>\n    <strong>ConnectionStateChangedEvent</strong>: This event is raised when the\n    connection between two peers changes. It can have two values:\n    <ul>\n      <li>CONNECTED</li>\n      <li>DISCONNECTED</li>\n    </ul>\n  </li>\n  <li>\n    <strong>MediaStateChangedEvent</strong>: This event provides information\n    about the state of the underlying RTP session.\n    <p>\n      The standard definition of RTP (<a\n        href='https://tools.ietf.org/html/rfc3550'\n        target='_blank'\n        >RFC 3550</a\n      >) describes a session as active whenever there is a maintained flow of\n      RTCP control packets, regardless of whether there is actual media flowing\n      through RTP data packets or not. The reasoning behind this is that, at any\n      given moment, a participant of an RTP session might temporarily stop\n      sending RTP data packets, but this wouldn't necessarily mean that the RTP\n      session as a whole is finished; it maybe just means that the participant\n      has some temporary issues but it will soon resume sending data. For this\n      reason, that an RTP session has really finished is something that is\n      considered only by the prolonged absence of RTCP control packets between\n      participants.\n    </p>\n    <p>\n      Since RTCP packets do not flow at a constant rate (for instance,\n      minimizing a browser window with a WebRTC's\n      <code>RTCPeerConnection</code> object might affect the sending interval),\n      it is not possible to immediately detect their absence and assume that the\n      RTP session has finished. Instead, there is a guard period of\n      approximately <strong>5 seconds</strong> of missing RTCP packets before\n      considering that the underlying RTP session is effectively finished, thus\n      triggering a <code>MediaStateChangedEvent = DISCONNECTED</code> event.\n    </p>\n    <p>\n      In other words, there is always a period during which there might be no\n      media flowing, but this event hasn't been fired yet. Nevertheless, this is\n      the most reliable and useful way of knowing what is the long-term, steady\n      state of RTP media exchange.\n    </p>\n    <p>\n      The <code>ConnectionStateChangedEvent</code> comes in contrast with more\n      instantaneous events such as MediaElement's\n      :rom:attr:`MediaFlowInStateChange` and\n      :rom:attr:`MediaFlowOutStateChange`, which are triggered almost\n      immediately after the RTP data packets stop flowing between RTP session\n      participants. This makes the <em>MediaFlow</em> events a good way to\n      know if participants are suffering from short-term intermittent\n      connectivity issues, but they are not enough to know if the connectivity\n      issues are just spurious network hiccups or are part of a more long-term\n      disconnection problem.\n    </p>\n    <p>\n      Possible values are:\n    </p>\n    <ul>\n      <li>CONNECTED: There is an RTCP packet flow between peers.</li>\n      <li>\n        DISCONNECTED: Either no RTCP packets have been received yet, or the\n        remote peer has ended the RTP session with a <code>BYE</code> message,\n        or at least 5 seconds have elapsed since the last RTCP packet was\n        received.\n      </li>\n    </ul>\n  </li>\n</ul>\n<p>\n  Part of the bandwidth control for the video component of the media session is\n  done here:\n</p>\n<ul>\n  <li>\n    Input bandwidth: Values used to inform remote peers about the bitrate that\n    can be sent to this endpoint.\n    <ul>\n      <li>\n        <strong>MinVideoRecvBandwidth</strong>: Minimum input bitrate, requested\n        from WebRTC senders with REMB (Default: 30 Kbps).\n      </li>\n      <li>\n        <strong>MaxAudioRecvBandwidth</strong> and\n        <strong>MaxVideoRecvBandwidth</strong>: Maximum input bitrate, signaled\n        in SDP Offers to WebRTC and RTP senders (Default: unlimited).\n      </li>\n    </ul>\n  </li>\n  <li>\n    Output bandwidth: Values used to control bitrate of the video streams sent\n    to remote peers. It is important to keep in mind that pushed bitrate depends\n    on network and remote peer capabilities. Remote peers can also announce\n    bandwidth limitation in their SDPs (through the\n    <code>b={modifier}:{value}</code> attribute). Kurento will always enforce\n    bitrate limitations specified by the remote peer over internal\n    configurations.\n    <ul>\n      <li>\n        <strong>MinVideoSendBandwidth</strong>: REMB override of minimum bitrate\n        sent to WebRTC receivers (Default: 100 Kbps).\n      </li>\n      <li>\n        <strong>MaxVideoSendBandwidth</strong>: REMB override of maximum bitrate\n        sent to WebRTC receivers (Default: 500 Kbps).\n      </li>\n      <li>\n        <strong>RembParams.rembOnConnect</strong>: Initial local REMB bandwidth\n        estimation that gets propagated when a new endpoint is connected.\n      </li>\n    </ul>\n  </li>\n</ul>\n<p>\n  <strong>\n    All bandwidth control parameters must be changed before the SDP negotiation\n    takes place, and can't be changed afterwards.\n  </strong>\n</p>\n      ",
+      "doc": "Handles RTP communications.\n<p>\n  All endpoints that rely on the RTP protocol, like the\n  <strong>RtpEndpoint</strong> or the <strong>WebRtcEndpoint</strong>, inherit\n  from this class. The endpoint provides information about the connection state\n  and the media state, which can be consulted at any time through the\n  :rom:attr:`mediaState` and the :rom:attr:`connectionState` properties. It is\n  also possible subscribe to events fired when these properties change.\n</p>\n<ul>\n  <li>\n    <strong>ConnectionStateChangedEvent</strong>: This event is raised when the\n    connection between two peers changes. It can have two values:\n    <ul>\n      <li>CONNECTED</li>\n      <li>DISCONNECTED</li>\n    </ul>\n  </li>\n  <li>\n    <strong>MediaStateChangedEvent</strong>: This event provides information\n    about the state of the underlying RTP session.\n    <p>\n      The standard definition of RTP (<a\n        href='https://tools.ietf.org/html/rfc3550'\n        target='_blank'\n        >RFC 3550</a\n      >) describes a session as active whenever there is a maintained flow of\n      RTCP control packets, regardless of whether there is actual media flowing\n      through RTP data packets or not. The reasoning behind this is that, at any\n      given moment, a participant of an RTP session might temporarily stop\n      sending RTP data packets, but this wouldn't necessarily mean that the RTP\n      session as a whole is finished; it maybe just means that the participant\n      has some temporary issues but it will soon resume sending data. For this\n      reason, that an RTP session has really finished is something that is\n      considered only by the prolonged absence of RTCP control packets between\n      participants.\n    </p>\n    <p>\n      Since RTCP packets do not flow at a constant rate (for instance,\n      minimizing a browser window with a WebRTC's\n      <code>RTCPeerConnection</code> object might affect the sending interval),\n      it is not possible to immediately detect their absence and assume that the\n      RTP session has finished. Instead, there is a guard period of\n      approximately <strong>5 seconds</strong> of missing RTCP packets before\n      considering that the underlying RTP session is effectively finished, thus\n      triggering a <code>MediaStateChangedEvent = DISCONNECTED</code> event.\n    </p>\n    <p>\n      In other words, there is always a period during which there might be no\n      media flowing, but this event hasn't been fired yet. Nevertheless, this is\n      the most reliable and useful way of knowing what is the long-term, steady\n      state of RTP media exchange.\n    </p>\n    <p>\n      The <code>ConnectionStateChangedEvent</code> comes in contrast with more\n      instantaneous events such as MediaElement's\n      :rom:attr:`MediaFlowInStateChanged` and\n      :rom:attr:`MediaFlowOutStateChanged`, which are triggered almost\n      immediately after the RTP data packets stop flowing between RTP session\n      participants. This makes the <em>MediaFlow</em> events a good way to\n      know if participants are suffering from short-term intermittent\n      connectivity issues, but they are not enough to know if the connectivity\n      issues are just spurious network hiccups or are part of a more long-term\n      disconnection problem.\n    </p>\n    <p>\n      Possible values are:\n    </p>\n    <ul>\n      <li>CONNECTED: There is an RTCP packet flow between peers.</li>\n      <li>\n        DISCONNECTED: Either no RTCP packets have been received yet, or the\n        remote peer has ended the RTP session with a <code>BYE</code> message,\n        or at least 5 seconds have elapsed since the last RTCP packet was\n        received.\n      </li>\n    </ul>\n  </li>\n</ul>\n<p>\n  Part of the bandwidth control for the video component of the media session is\n  done here:\n</p>\n<ul>\n  <li>\n    Input bandwidth: Values used to inform remote peers about the bitrate that\n    can be sent to this endpoint.\n    <ul>\n      <li>\n        <strong>MinVideoRecvBandwidth</strong>: Minimum input bitrate, requested\n        from WebRTC senders with REMB (Default: 30 Kbps).\n      </li>\n      <li>\n        <strong>MaxAudioRecvBandwidth</strong> and\n        <strong>MaxVideoRecvBandwidth</strong>: Maximum input bitrate, signaled\n        in SDP Offers to WebRTC and RTP senders (Default: unlimited).\n      </li>\n    </ul>\n  </li>\n  <li>\n    Output bandwidth: Values used to control bitrate of the video streams sent\n    to remote peers. It is important to keep in mind that pushed bitrate depends\n    on network and remote peer capabilities. Remote peers can also announce\n    bandwidth limitation in their SDPs (through the\n    <code>b={modifier}:{value}</code> attribute). Kurento will always enforce\n    bitrate limitations specified by the remote peer over internal\n    configurations.\n    <ul>\n      <li>\n        <strong>MinVideoSendBandwidth</strong>: REMB override of minimum bitrate\n        sent to WebRTC receivers (Default: 100 Kbps).\n      </li>\n      <li>\n        <strong>MaxVideoSendBandwidth</strong>: REMB override of maximum bitrate\n        sent to WebRTC receivers (Default: 500 Kbps).\n      </li>\n      <li>\n        <strong>RembParams.rembOnConnect</strong>: Initial local REMB bandwidth\n        estimation that gets propagated when a new endpoint is connected.\n      </li>\n    </ul>\n  </li>\n</ul>\n<p>\n  <strong>\n    All bandwidth control parameters must be changed before the SDP negotiation\n    takes place, and can't be changed afterwards.\n  </strong>\n</p>\n      ",
       "abstract": true,
       "extends": "SdpEndpoint",
       "properties": [
@@ -133,7 +133,7 @@
     },
     {
       "name": "MediaElement",
-      "doc": "The basic building block of the media server, that can be interconnected inside a pipeline.\n<p>\n  A :rom:cls:`MediaElement` is a module that encapsulates a specific media\n  capability, and that is able to exchange media with other MediaElements\n  through an internal element called <b>pad</b>.\n</p>\n<p>\n  A pad can be defined as an input or output interface. Input pads are called\n  sinks, and it's where the media elements receive media from other media\n  elements. Output interfaces are called sources, and it's the pad used by the\n  media element to feed media to other media elements. There can be only one\n  sink pad per media element. On the other hand, the number of source pads is\n  unconstrained. This means that a certain media element can receive media only\n  from one element at a time, while it can send media to many others. Pads are\n  created on demand, when the connect method is invoked. When two media elements\n  are connected, one media pad is created for each type of media connected. For\n  example, if you connect AUDIO and VIDEO between two media elements, each one\n  will need to create two new pads: one for AUDIO and one for VIDEO.\n</p>\n<p>\n  When media elements are connected, it can be the case that the encoding\n  required in both input and output pads is not the same, and thus it needs to\n  be transcoded. This is something that is handled transparently by the\n  MediaElement internals, but such transcoding has a toll in the form of a\n  higher CPU load, so connecting MediaElements that need media encoded in\n  different formats is something to consider as a high load operation. The event\n  `MediaTranscodingStateChange` allows to inform the client application of\n  whether media transcoding is being enabled or not inside any MediaElement\n  object.\n</p>\n      ",
+      "doc": "The basic building block of the media server, that can be interconnected inside a pipeline.\n<p>\n  A :rom:cls:`MediaElement` is a module that encapsulates a specific media\n  capability, and that is able to exchange media with other MediaElements\n  through an internal element called <b>pad</b>.\n</p>\n<p>\n  A pad can be defined as an input or output interface. Input pads are called\n  sinks, and it's where the media elements receive media from other media\n  elements. Output interfaces are called sources, and it's the pad used by the\n  media element to feed media to other media elements. There can be only one\n  sink pad per media element. On the other hand, the number of source pads is\n  unconstrained. This means that a certain media element can receive media only\n  from one element at a time, while it can send media to many others. Pads are\n  created on demand, when the connect method is invoked. When two media elements\n  are connected, one media pad is created for each type of media connected. For\n  example, if you connect AUDIO and VIDEO between two media elements, each one\n  will need to create two new pads: one for AUDIO and one for VIDEO.\n</p>\n<p>\n  When media elements are connected, it can be the case that the encoding\n  required in both input and output pads is not the same, and thus it needs to\n  be transcoded. This is something that is handled transparently by the\n  MediaElement internals, but such transcoding has a toll in the form of a\n  higher CPU load, so connecting MediaElements that need media encoded in\n  different formats is something to consider as a high load operation. The event\n  `MediaTranscodingStateChanged` allows to inform the client application of\n  whether media transcoding is being enabled or not inside any MediaElement\n  object.\n</p>\n      ",
       "abstract": true,
       "extends": "MediaObject",
       "properties": [
@@ -379,7 +379,7 @@
             },
             {
               "name": "binName",
-              "doc": "Internal name of the processing bin, as previously given by ``MediaTranscodingStateChange``.",
+              "doc": "Internal name of the processing bin, as previously given by ``MediaTranscodingStateChanged``.",
               "type": "String",
               "optional": true,
               "defaultValue": "default"
@@ -397,8 +397,11 @@
         "ElementConnected",
         "ElementDisconnected",
         "MediaFlowOutStateChange",
+        "MediaFlowOutStateChanged",
         "MediaFlowInStateChange",
-        "MediaTranscodingStateChange"
+        "MediaFlowInStateChanged",
+        "MediaTranscodingStateChange",
+        "MediaTranscodingStateChanged"
       ]
     },
     {
@@ -1948,6 +1951,28 @@
       ],
       "extends": "Media",
       "name": "MediaFlowOutStateChange",
+      "doc": "@deprecated Use <code>MediaFlowOutStateChanged</code> instead."
+    },
+    {
+      "properties": [
+        {
+          "name": "state",
+          "doc": "Current media state",
+          "type": "MediaFlowState"
+        },
+        {
+          "name": "padName",
+          "doc": "Name of the pad which has media",
+          "type": "String"
+        },
+        {
+          "name": "mediaType",
+          "doc": "Type of media that is flowing",
+          "type": "MediaType"
+        }
+      ],
+      "extends": "Media",
+      "name": "MediaFlowOutStateChanged",
       "doc": "Fired when the outgoing media flow begins or ends. The event contains:\n      <ul>\n        <li>State: whether the endpoint is sending media (FLOWING) or not (NOT_FLOWING).</li>\n        <li>padName. The name of the pad that changed state.</li>\n        <li>MediaType: The type of media flowing.</li>\n      </ul>"
     },
     {
@@ -1970,6 +1995,28 @@
       ],
       "extends": "Media",
       "name": "MediaFlowInStateChange",
+      "doc": "@deprecated Use <code>MediaFlowInStateChanged</code> instead."
+    },
+    {
+      "properties": [
+        {
+          "name": "state",
+          "doc": "Current media state",
+          "type": "MediaFlowState"
+        },
+        {
+          "name": "padName",
+          "doc": "Name of the pad which has media",
+          "type": "String"
+        },
+        {
+          "name": "mediaType",
+          "doc": "Type of media that is flowing",
+          "type": "MediaType"
+        }
+      ],
+      "extends": "Media",
+      "name": "MediaFlowInStateChanged",
       "doc": "Fired when the incoming media flow begins or ends. The event contains:\n      <ul>\n        <li>State: whether the endpoint is receiving media (FLOWING) or not (NOT_FLOWING).</li>\n        <li>padName. The name of the pad that changed state.</li>\n        <li>MediaType: The type of media flowing.</li>\n      </ul>"
     },
     {
@@ -1992,6 +2039,28 @@
       ],
       "extends": "Media",
       "name": "MediaTranscodingStateChange",
+      "doc": "@deprecated Use <code>MediaTranscodingStateChanged</code> instead."
+    },
+    {
+      "properties": [
+        {
+          "name": "state",
+          "doc": "Current transcoding state; either enabled or disabled.",
+          "type": "MediaTranscodingState"
+        },
+        {
+          "name": "binName",
+          "doc": "Name of the GStreamer bin which is processing the media.",
+          "type": "String"
+        },
+        {
+          "name": "mediaType",
+          "doc": "Type of media that is being processed; either audio or video.",
+          "type": "MediaType"
+        }
+      ],
+      "extends": "Media",
+      "name": "MediaTranscodingStateChanged",
       "doc": "Event fired when an incoming media begins and codec transcoding is either required or not."
     },
     {
