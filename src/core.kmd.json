@@ -15,7 +15,7 @@
       "java": {
         "packageName": "org.kurento.client",
         "mavenGroupId": "org.kurento",
-        "mavenArtifactId": "kms-api-core",
+        "mavenArtifactId": "kurento-client",
         "mavenVersion": "6.18.0-SNAPSHOT"
       },
       "js": {
