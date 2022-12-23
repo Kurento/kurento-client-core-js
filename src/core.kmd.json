@@ -75,6 +75,13 @@
           "type": "RembParams"
         }
       ],
+      "methods": [
+        {
+          "params": [],
+          "name": "requestKeyframe",
+          "doc": "\nForce sending a new keyframe request to the upstream elements in the Kurento\nPipeline, towards the associated producer. Only valid for video consumers.\n          "
+        }
+      ],
       "events": [
         "MediaStateChanged",
         "ConnectionStateChanged"
