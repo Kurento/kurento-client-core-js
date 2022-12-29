@@ -21,8 +21,8 @@
       "js": {
         "nodeName": "kurento-client-core",
         "npmDescription": "JavaScript Client API for Kurento Media Server",
-        "npmGit": "Kurento/kurento-client-core-js",
-        "npmVersion": "Kurento/kurento-client-core-js"
+        "npmGit": "https://github.com/Kurento/kurento-client-core-js.git",
+        "npmVersion": "https://github.com/Kurento/kurento-client-core-js.git"
       }
     },
     "implementation": {
@@ -145,23 +145,38 @@
       "extends": "MediaObject",
       "properties": [
         {
+          "name": "encoderBitrate",
+          "doc": "Target video bitrate for media transcoding.\n<p>\n  The bitrate of a video has a direct impact on its perceived image quality.\n  Higher bitrate means higher quality, but also a larger amount of bytes to\n  transmit or store. Use this parameter to set the desired average bitrate in\n  videos that are transcoded by the media server.\n</p>\n<p>\n  This parameter is most useful for :rom:cls:`RecorderEndpoint` and\n  :rom:cls:`RtpEndpoint`: when media is being transcoded (either for streaming\n  or storing on disk), the resulting quality is directly controlled with this\n  value.\n</p>\n<p>\n  For :rom:cls:`WebRtcEndpoint`, this value should be left as default, as remote\n  WebRTC receivers will already send feedback to inform the media server about\n  what is the optimal bitrate to send.\n</p>\n<p>\n  Setting a value will only work if done before the media starts to flow.\n</p>\n<ul>\n  <li>Unit: bps (bits per second).</li>\n  <li>Default: 300000 (300 kbps).</li>\n</ul>\n          ",
+          "type": "int"
+        },
+        {
           "name": "minOuputBitrate",
-          "doc": "Minimum video bandwidth for transcoding.\n@deprecated Deprecated due to a typo. Use :rom:meth:`minOutputBitrate` instead of this function.",
+          "doc": "Minimum video bitrate for media transcoding.\n@deprecated Use :rom:attr:`minEncoderBitrate` instead of this property.\n          ",
           "type": "int"
         },
         {
           "name": "minOutputBitrate",
-          "doc": "Minimum video bitrate for transcoding.\n<ul>\n  <li>Unit: bps (bits per second).</li>\n  <li>Default: 0.</li>\n</ul>\n          ",
+          "doc": "Minimum video bitrate for media transcoding.\n@deprecated Use :rom:attr:`minEncoderBitrate` instead of this property.\n          ",
+          "type": "int"
+        },
+        {
+          "name": "minEncoderBitrate",
+          "doc": "Minimum video bitrate for media transcoding.\n<p>\n  This parameter can be used to fine tune the automatic bitrate selection that\n  normally takes place within elements that are able to dynamically change the\n  encoding bitrate according to the conditions of the streaming, such as\n  :rom:cls:`WebRtcEndpoint`.\n</p>\n<p>\n  This should be left as default in most cases, given that remote WebRTC\n  receivers already send feedback to inform the media server about what is the\n  optimal bitrate to send. Otherwise, this parameter could be used for example\n  to force a higher bitrate than what is being requested by receivers.\n</p>\n<p>\n  Setting a value will only work if done before the media starts to flow.\n</p>\n<ul>\n  <li>Unit: bps (bits per second).</li>\n  <li>Default: 0.</li>\n</ul>\n          ",
           "type": "int"
         },
         {
           "name": "maxOuputBitrate",
-          "doc": "Maximum video bandwidth for transcoding.\n@deprecated Deprecated due to a typo. Use :rom:meth:`maxOutputBitrate` instead of this function.",
+          "doc": "Maximum video bitrate for media transcoding.\n@deprecated Use :rom:attr:`maxEncoderBitrate` instead of this property.\n          ",
           "type": "int"
         },
         {
           "name": "maxOutputBitrate",
-          "doc": "Maximum video bitrate for transcoding.\n<ul>\n  <li>Unit: bps (bits per second).</li>\n  <li>Default: MAXINT.</li>\n  <li>0 = unlimited.</li>\n</ul>\n          ",
+          "doc": "Maximum video bitrate for media transcoding.\n@deprecated Use :rom:attr:`maxEncoderBitrate` instead of this property.\n          ",
+          "type": "int"
+        },
+        {
+          "name": "maxEncoderBitrate",
+          "doc": "Maximum video bitrate for media transcoding.\n<p>\n  This parameter can be used to fine tune the automatic bitrate selection that\n  normally takes place within elements that are able to dynamically change the\n  encoding bitrate according to the conditions of the streaming, such as\n  :rom:cls:`WebRtcEndpoint`.\n</p>\n<p>\n  This should be left as default in most cases, given that remote WebRTC\n  receivers already send feedback to inform the media server about what is the\n  optimal bitrate to send. Otherwise, this parameter could be used for example\n  to limit the total bitrate that is handled by the server, by setting a low\n  maximum output for all endpoints.\n</p>\n<p>\n  Setting a value will only work if done before the media starts to flow.\n</p>\n<ul>\n  <li>Unit: bps (bits per second).</li>\n  <li>Default: 0.</li>\n  <li>\n    0 = unlimited. Encoding performed with bitrate as requested by receivers.\n  </li>\n</ul>\n          ",
           "type": "int"
         }
       ],
@@ -310,12 +325,12 @@
           "params": [
             {
               "name": "bitrate",
-              "doc": "Configure the enconding media bitrate in bps",
+              "doc": "Target video bitrate for media transcoding.",
               "type": "int"
             }
           ],
           "name": "setOutputBitrate",
-          "doc": "@deprecated\nAllows change the target bitrate for the media output, if the media is encoded using VP8 or H264. This method only works if it is called before the media starts to flow."
+          "doc": "Set the target video bitrate for media transcoding.\n@deprecated Use :rom:attr:`encoderBitrate` instead of this method.\n          "
         },
         {
           "params": [
