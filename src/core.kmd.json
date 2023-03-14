@@ -1,14 +1,14 @@
 {
   "name": "core",
-  "version": "6.18.1-dev",
-  "kurentoVersion": "6.18.1-dev",
+  "version": "7.0.0-dev",
+  "kurentoVersion": "7.0.0-dev",
   "imports": [],
   "code": {
     "kmd": {
       "java": {
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kms-api-core",
-        "mavenVersion": "6.18.1-SNAPSHOT"
+        "mavenVersion": "7.0.0-SNAPSHOT"
       }
     },
     "api": {
@@ -16,7 +16,7 @@
         "packageName": "org.kurento.client",
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kurento-client",
-        "mavenVersion": "6.18.1-SNAPSHOT"
+        "mavenVersion": "7.0.0-SNAPSHOT"
       },
       "js": {
         "nodeName": "kurento-client-core",
@@ -33,23 +33,23 @@
   "remoteClasses": [
     {
       "name": "BaseRtpEndpoint",
-      "doc": "Handles RTP communications.\n<p>\n  All endpoints that rely on the RTP protocol, like the\n  <strong>RtpEndpoint</strong> or the <strong>WebRtcEndpoint</strong>, inherit\n  from this class. The endpoint provides information about the Connection state\n  and the Media state, which can be consulted at any time through the\n  :rom:attr:`getMediaState` and the :rom:attr:`getConnectionState` methods.\n  It is also possible subscribe to events fired when these properties change:\n</p>\n<ul>\n  <li>\n    <strong>:rom:evt:`ConnectionStateChanged`</strong>: This event is raised\n    when the connection between two peers changes. It can have two values:\n    <ul>\n      <li>CONNECTED</li>\n      <li>DISCONNECTED</li>\n    </ul>\n  </li>\n  <li>\n    <strong>:rom:evt:`MediaStateChanged`</strong>: This event provides\n    information about the state of the underlying RTP session. Possible values\n    are:\n    <ul>\n      <li>CONNECTED: There is an RTCP packet flow between peers.</li>\n      <li>\n        DISCONNECTED: Either no RTCP packets have been received yet, or the\n        remote peer has ended the RTP session with a <code>BYE</code> message,\n        or at least 5 seconds have elapsed since the last RTCP packet was\n        received.\n      </li>\n    </ul>\n    <p>\n      The standard definition of RTP (<a\n        href='https://tools.ietf.org/html/rfc3550'\n        target='_blank'\n        >RFC 3550</a\n      >) describes a session as active whenever there is a maintained flow of\n      RTCP control packets, regardless of whether there is actual media flowing\n      through RTP data packets or not. The reasoning behind this is that, at any\n      given moment, a participant of an RTP session might temporarily stop\n      sending RTP data packets, but this wouldn't necessarily mean that the RTP\n      session as a whole is finished; it maybe just means that the participant\n      has some temporary issues but it will soon resume sending data. For this\n      reason, that an RTP session has really finished is something that is\n      considered only by the prolonged absence of RTCP control packets between\n      participants.\n    </p>\n    <p>\n      Since RTCP packets do not flow at a constant rate (for instance,\n      minimizing a browser window with a WebRTC's\n      <code>RTCPeerConnection</code> object might affect the sending interval),\n      it is not possible to immediately detect their absence and assume that the\n      RTP session has finished. Instead, there is a guard period of\n      approximately <strong>5 seconds</strong> of missing RTCP packets before\n      considering that the underlying RTP session is effectively finished, thus\n      triggering a <code>MediaStateChangedEvent = DISCONNECTED</code> event.\n    </p>\n    <p>\n      In other words, there is always a period during which there might be no\n      media flowing, but this event hasn't been fired yet. Nevertheless, this is\n      the most reliable and useful way of knowing what is the long-term, steady\n      state of RTP media exchange.\n    </p>\n    <p>\n      The :rom:evt:`ConnectionStateChanged` comes in contrast with more\n      instantaneous events such as MediaElement's\n      :rom:evt:`MediaFlowInStateChanged` and\n      :rom:evt:`MediaFlowOutStateChanged`, which are triggered almost\n      immediately after the RTP data packets stop flowing between RTP session\n      participants. This makes the <em>MediaFlow</em> events a good way to\n      know if participants are suffering from short-term intermittent\n      connectivity issues, but they are not enough to know if the connectivity\n      issues are just spurious network hiccups or are part of a more long-term\n      disconnection problem.\n    </p>\n  </li>\n</ul>\n<p>\n  Part of the bandwidth control for the video component of the media session is\n  done here:\n</p>\n<ul>\n  <li>\n    Input bandwidth: Values used to inform remote peers about the bitrate that\n    can be sent to this endpoint.\n    <ul>\n      <li>\n        <strong>MinVideoRecvBandwidth</strong>: Minimum input bitrate, requested\n        from WebRTC senders with REMB (Default: 30 Kbps).\n      </li>\n      <li>\n        <strong>MaxAudioRecvBandwidth</strong> and\n        <strong>MaxVideoRecvBandwidth</strong>: Maximum input bitrate, signaled\n        in SDP Offers to WebRTC and RTP senders (Default: unlimited).\n      </li>\n    </ul>\n  </li>\n  <li>\n    Output bandwidth: Values used to control bitrate of the video streams sent\n    to remote peers. It is important to keep in mind that pushed bitrate depends\n    on network and remote peer capabilities. Remote peers can also announce\n    bandwidth limitation in their SDPs (through the\n    <code>b={modifier}:{value}</code> attribute). Kurento will always enforce\n    bitrate limitations specified by the remote peer over internal\n    configurations.\n    <ul>\n      <li>\n        <strong>MinVideoSendBandwidth</strong>: REMB override of minimum bitrate\n        sent to WebRTC receivers (Default: 100 Kbps).\n      </li>\n      <li>\n        <strong>MaxVideoSendBandwidth</strong>: REMB override of maximum bitrate\n        sent to WebRTC receivers (Default: 500 Kbps).\n      </li>\n      <li>\n        <strong>RembParams.rembOnConnect</strong>: Initial local REMB bandwidth\n        estimation that gets propagated when a new endpoint is connected.\n      </li>\n    </ul>\n  </li>\n</ul>\n<p>\n  <strong>\n    All bandwidth control parameters must be changed before the SDP negotiation\n    takes place, and can't be changed afterwards.\n  </strong>\n</p>\n      ",
+      "doc": "\nBase class for the implementation of RTP-based communication endpoints.\n<p>\n  All endpoints that rely on the RTP protocol, like the\n  :rom:cls:`RtpEndpoint` or the :rom:cls:`WebRtcEndpoint`, inherit\n  from this class. This endpoint provides information about the Connection state\n  and the Media state, which can be consulted at any time through the\n  :rom:attr:`getMediaState` and the :rom:attr:`getConnectionState` methods. It\n  is also possible subscribe to events fired when these properties change:\n</p>\n<ul>\n  <li>\n    <strong>:rom:evt:`ConnectionStateChanged`</strong>: This event is raised\n    when the connection between two peers changes. It can have two values:\n    <ul>\n      <li>CONNECTED</li>\n      <li>DISCONNECTED</li>\n    </ul>\n  </li>\n  <li>\n    <strong>:rom:evt:`MediaStateChanged`</strong>: This event provides\n    information about the state of the underlying RTP session. Possible values\n    are:\n    <ul>\n      <li>CONNECTED: There is an RTCP packet flow between peers.</li>\n      <li>\n        DISCONNECTED: Either no RTCP packets have been received yet, or the\n        remote peer has ended the RTP session with a <code>BYE</code> message,\n        or at least 5 seconds have elapsed since the last RTCP packet was\n        received.\n      </li>\n    </ul>\n    <p>\n      The standard definition of RTP (<a\n        href='https://tools.ietf.org/html/rfc3550'\n        target='_blank'\n        >RFC 3550</a\n      >) describes a session as active whenever there is a maintained flow of\n      RTCP control packets, regardless of whether there is actual media flowing\n      through RTP data packets or not. The reasoning behind this is that, at any\n      given moment, a participant of an RTP session might temporarily stop\n      sending RTP data packets, but this wouldn't necessarily mean that the RTP\n      session as a whole is finished; it maybe just means that the participant\n      has some temporary issues but it will soon resume sending data. For this\n      reason, that an RTP session has really finished is something that is\n      considered only by the prolonged absence of RTCP control packets between\n      participants.\n    </p>\n    <p>\n      Since RTCP packets do not flow at a constant rate (for instance,\n      minimizing a browser window with a WebRTC's\n      <code>RTCPeerConnection</code> object might affect the sending interval),\n      it is not possible to immediately detect their absence and assume that the\n      RTP session has finished. Instead, there is a guard period of\n      approximately <strong>5 seconds</strong> of missing RTCP packets before\n      considering that the underlying RTP session is effectively finished, thus\n      triggering a <code>MediaStateChangedEvent = DISCONNECTED</code> event.\n    </p>\n    <p>\n      In other words, there is always a period during which there might be no\n      media flowing, but this event hasn't been fired yet. Nevertheless, this is\n      the most reliable and useful way of knowing what is the long-term, steady\n      state of RTP media exchange.\n    </p>\n    <p>\n      The :rom:evt:`ConnectionStateChanged` comes in contrast with more\n      instantaneous events such as MediaElement's\n      :rom:evt:`MediaFlowInStateChanged` and\n      :rom:evt:`MediaFlowOutStateChanged`, which are triggered almost\n      immediately after the RTP data packets stop flowing between RTP session\n      participants. This makes the <em>MediaFlow</em> events a good way to know\n      if participants are suffering from short-term intermittent connectivity\n      issues, but they are not enough to know if the connectivity issues are\n      just spurious network hiccups or are part of a more long-term\n      disconnection problem.\n    </p>\n  </li>\n</ul>\n<h2>Bitrate management</h2>\n<p>\n  <b>Bandwidth control</b> for the video component of the media session is done\n  here.\n  <strong>\n    Note that the default <em>MaxVideoSendBandwidth</em> is a VERY conservative\n    value, and leads to a low maximum video quality. Most applications will\n    probably want to increase this to higher values such as 2000 kbps (2 Mbps).\n  </strong>\n</p>\n<ul>\n  <li>\n    <b>Recv bandwidth</b>: Used to request a remote sender that its media\n    bitrate is within the requested range.\n    <ul>\n      <li>\n        <strong>MinVideoRecvBandwidth</strong>: Minimum inbound bitrate\n        requested by this endpoint. Signaled to compatible WebRTC and RTP\n        senders, as part of the REMB bandwidth estimation protocol.\n        <ul>\n          <li>Unit: kbps (kilobits per second).</li>\n          <li>Default: 0.</li>\n          <li>\n            Note: The actual minimum value is 30 kbps, even if a lower value is\n            set.\n          </li>\n        </ul>\n      </li>\n      <li>\n        <strong>MaxAudioRecvBandwidth</strong> and\n        <strong>MaxVideoRecvBandwidth</strong>: Maximum inbound bitrate\n        requested by this endpoint. Signaled to compatible WebRTC and RTP\n        senders as part of Kurento's REMB bandwidth estimations, and also as an\n        SDP bitrate attribute (<code>b=AS:{value}</code>, see\n        <a href='https://datatracker.ietf.org/doc/html/rfc8866#section-5.8'\n          >RFC 8866 Section 5.8. Bandwidth Information</a\n        >) in <i>sendrecv</i> and <i>recvonly</i> SDP Offers.\n        <ul>\n          <li>Unit: kbps (kilobits per second).</li>\n          <li>Default: 0 (unlimited).</li>\n        </ul>\n      </li>\n    </ul>\n  </li>\n  <li>\n    <b>Send bandwidth</b>: Used to control bitrate of the outbound media stream\n    sent to remote peers. It is important to keep in mind that outbound bitrate\n    ultimately depends on network and remote peer capabilities.\n    <ul>\n      <li>\n        <strong>MinVideoSendBandwidth</strong>: Minimum outbound bitrate sent by\n        this endpoint.\n        <ul>\n          <li>Unit: kbps (kilobits per second).</li>\n          <li>Default: 100.</li>\n          <li>\n            0 = unlimited: the video bitrate will drop as needed, even to the\n            lowest possible quality, which could make the video completely\n            blurry and pixelated, but would adapt better to losses caused by\n            network congestion.\n          </li>\n        </ul>\n      </li>\n      <li>\n        <strong>MaxVideoSendBandwidth</strong>: Maximum outbound bitrate sent by\n        this endpoint. Remote peers themselves might also announce a maximum\n        bitrate as part of their REMB bandwidth estimations, and also as an SDP\n        bitrate attribute (<code>b=AS:{value}</code>, see\n        <a href='https://datatracker.ietf.org/doc/html/rfc8866#section-5.8'\n          >RFC 8866 Section 5.8. Bandwidth Information</a\n        >) in <i>sendrecv</i> and <i>recvonly</i> SDP Offers or Answers. Kurento\n        will always give priority to bitrate limitations specified by remote\n        peers, over internal configurations.\n        <ul>\n          <li>Unit: kbps (kilobits per second).</li>\n          <li>Default: 500.</li>\n          <li>\n            0 = unlimited: the video bitrate will grow until all the available\n            network bandwidth is used by the stream.<br />\n            Note that this might have a bad effect if more than one stream is\n            running (as all of them would try to raise the video bitrate\n            indefinitely, until the network gets saturated).\n          </li>\n        </ul>\n      </li>\n      <li>\n        <strong>RembParams.rembOnConnect</strong>: Initial local REMB bandwidth\n        estimation that gets used when a new endpoint is connected. Only useful\n        for connections that are compatible with the REMB bandwidth estimation\n        protocol (such as most WebRTC peers).\n      </li>\n    </ul>\n  </li>\n</ul>\n<p>\n  <strong>\n    All bandwidth control parameters must be set before the SDP negotiation\n    takes place, and can't be modified afterwards.\n  </strong>\n</p>\n<p>\n  Take into consideration that setting a too high upper limit for the output\n  bandwidth can be a reason for the network connection to be congested quickly.\n</p>\n      ",
       "abstract": true,
       "extends": "SdpEndpoint",
       "properties": [
         {
           "name": "minVideoRecvBandwidth",
-          "doc": "Minimum input bitrate, requested from WebRTC senders with REMB.\n<p>\n  This is used to set a minimum value of local REMB during bandwidth estimation,\n  if supported by the implementing class. The REMB estimation will then be sent\n  to remote peers, requesting them to send at least the indicated video bitrate.\n  It follows that min values will only have effect in remote peers that support\n  this congestion control mechanism, such as Chrome.\n</p>\n<ul>\n  <li>Unit: kbps (kilobits per second).</li>\n  <li>Default: 0.</li>\n  <li>\n    Note: The absolute minimum REMB value is 30 kbps, even if a lower value is\n    set here.\n  </li>\n</ul>\n          ",
+          "doc": "\nMinimum inbound bitrate requested by this endpoint. Signaled to compatible\nWebRTC and RTP senders, as part of the REMB bandwidth estimation protocol.\n<p>\n  This is used to set a minimum value of local REMB during bandwidth estimation.\n  The REMB estimation will then be sent to remote peers, causing them to send\n  at least the indicated video bitrate. It follows that this parameter will only\n  have effect for remote peers that support the REMB bandwidth estimation\n  protocol (such as e.g. most web browsers compatible with WebRTC).\n</p>\n<ul>\n  <li>Unit: kbps (kilobits per second).</li>\n  <li>Default: 0.</li>\n  <li>\n    Note: The actual minimum value is 30 kbps, even if a lower value is set.\n  </li>\n</ul>\n          ",
           "type": "int"
         },
         {
           "name": "minVideoSendBandwidth",
-          "doc": "REMB override of minimum bitrate sent to WebRTC receivers.\n<p>\n  With this parameter you can control the minimum video quality that will be\n  sent when reacting to bad network conditions. Setting this parameter to a low\n  value permits the video quality to drop when the network conditions get worse.\n</p>\n<p>\n  This parameter provides a way to override the bitrate requested by remote REMB\n  bandwidth estimations: the bitrate sent will be always equal or greater than\n  this parameter, even if the remote peer requests even lower bitrates.\n</p>\n<p>\n  Note that if you set this parameter too high (trying to avoid bad video\n  quality altogether), you would be limiting the adaptation ability of the\n  congestion control algorithm, and your stream might be unable to ever recover\n  from adverse network conditions.\n</p>\n<ul>\n  <li>Unit: kbps (kilobits per second).</li>\n  <li>Default: 100.</li>\n  <li>\n    0 = unlimited: the video bitrate will drop as needed, even to the lowest\n    possible quality, which might make the video completely blurry and\n    pixelated.\n  </li>\n</ul>\n          ",
+          "doc": "\nMinimum outbound bitrate sent by this endpoint.\n<p>\n  With this parameter you can control the minimum video quality that will be\n  sent when reacting to bad network conditions. Setting this parameter to a low\n  value permits the video quality to drop when the network conditions get worse.\n</p>\n<p>\n  Note that if you set this parameter too high (trying to avoid bad video\n  quality altogether), you would be limiting the adaptation ability of the\n  congestion control algorithm, and your stream might be unable to ever recover\n  from adverse network conditions.\n</p>\n<ul>\n  <li>Unit: kbps (kilobits per second).</li>\n  <li>Default: 100.</li>\n  <li>\n    0 = unlimited: the video bitrate will drop as needed, even to the lowest\n    possible quality, which could make the video completely blurry and\n    pixelated, but would adapt better to losses caused by network congestion.\n  </li>\n</ul>\n          ",
           "type": "int"
         },
         {
           "name": "maxVideoSendBandwidth",
-          "doc": "REMB override of maximum bitrate sent to WebRTC receivers.\n<p>\n  With this parameter you can control the maximum video quality that will be\n  sent when reacting to good network conditions. Setting this parameter to a\n  high value permits the video quality to raise when the network conditions get\n  better.\n</p>\n<p>\n  This parameter provides a way to limit the bitrate requested by remote REMB\n  bandwidth estimations: the bitrate sent will be always equal or less than this\n  parameter, even if the remote peer requests higher bitrates.\n</p>\n<p>\n  Note that the default value of <strong>500 kbps</strong> is a VERY\n  conservative one, and leads to a low maximum video quality. Most applications\n  will probably want to increase this to higher values such as 2000 kbps (2\n  mbps).\n</p>\n<p>\n  The REMB congestion control algorithm works by gradually increasing the output\n  video bitrate, until the available bandwidth is fully used or the maximum send\n  bitrate has been reached. This is a slow, progressive change, which starts at\n  300 kbps by default. You can change the default starting point of REMB\n  estimations, by setting <code>RembParams.rembOnConnect</code>.\n</p>\n<ul>\n  <li>Unit: kbps (kilobits per second).</li>\n  <li>Default: 500.</li>\n  <li>\n    0 = unlimited: the video bitrate will grow until all the available network\n    bandwidth is used by the stream.<br />\n    Note that this might have a bad effect if more than one stream is running\n    (as all of them would try to raise the video bitrate indefinitely, until the\n    network gets saturated).\n  </li>\n</ul>\n          ",
+          "doc": "\nMaximum outbound bitrate sent by this endpoint. Remote peers themselves might\nalso announce a maximum bitrate as part of their REMB bandwidth estimations, and\nalso as an SDP bitrate attribute (<code>b=AS:{value}</code>, see\n<a href='https://datatracker.ietf.org/doc/html/rfc8866#section-5.8'\n  >RFC 8866 Section 5.8. Bandwidth Information</a\n>) in <i>sendrecv</i> and <i>recvonly</i> SDP Offers or Answers. Kurento will\nalways give priority to bitrate limitations specified by remote peers, over\ninternal configurations.\n<p>\n  With this parameter you can control the maximum video quality that will be\n  sent when reacting to good network conditions. Setting this parameter to a\n  high value permits the video quality to raise when the network conditions get\n  better.\n</p>\n<p>\n  <strong>\n    Note that the default <em>MaxVideoSendBandwidth</em> is a VERY conservative\n    value, and leads to a low maximum video quality. Most applications will\n    probably want to increase this to higher values such as 2000 kbps (2 Mbps).\n  </strong>\n</p>\n<p>\n  The REMB congestion control algorithm works by gradually increasing the output\n  video bitrate, until the available bandwidth is fully used or the maximum send\n  bitrate has been reached. This is a slow, progressive change, which starts at\n  300 kbps by default. You can change the default starting point of REMB\n  estimations, by setting <code>RembParams.rembOnConnect</code>.\n</p>\n<ul>\n  <li>Unit: kbps (kilobits per second).</li>\n  <li>Default: 500.</li>\n  <li>\n    0 = unlimited: the video bitrate will grow until all the available network\n    bandwidth is used by the stream.<br />\n    Note that this might have a bad effect if more than one stream is running\n    (as all of them would try to raise the video bitrate indefinitely, until the\n    network gets saturated).\n  </li>\n</ul>\n          ",
           "type": "int"
         },
         {
@@ -150,33 +150,13 @@
           "type": "int"
         },
         {
-          "name": "minOuputBitrate",
-          "doc": "Minimum video bitrate for media transcoding.\n@deprecated Use :rom:attr:`minEncoderBitrate` instead of this property.\n          ",
-          "type": "int"
-        },
-        {
-          "name": "minOutputBitrate",
-          "doc": "Minimum video bitrate for media transcoding.\n@deprecated Use :rom:attr:`minEncoderBitrate` instead of this property.\n          ",
-          "type": "int"
-        },
-        {
           "name": "minEncoderBitrate",
           "doc": "Minimum video bitrate for media transcoding.\n<p>\n  This parameter can be used to fine tune the automatic bitrate selection that\n  normally takes place within elements that are able to dynamically change the\n  encoding bitrate according to the conditions of the streaming, such as\n  :rom:cls:`WebRtcEndpoint`.\n</p>\n<p>\n  This should be left as default in most cases, given that remote WebRTC\n  receivers already send feedback to inform the media server about what is the\n  optimal bitrate to send. Otherwise, this parameter could be used for example\n  to force a higher bitrate than what is being requested by receivers.\n</p>\n<p>\n  Setting a value will only work if done before the media starts to flow.\n</p>\n<ul>\n  <li>Unit: bps (bits per second).</li>\n  <li>Default: 0.</li>\n</ul>\n          ",
           "type": "int"
         },
         {
-          "name": "maxOuputBitrate",
-          "doc": "Maximum video bitrate for media transcoding.\n@deprecated Use :rom:attr:`maxEncoderBitrate` instead of this property.\n          ",
-          "type": "int"
-        },
-        {
-          "name": "maxOutputBitrate",
-          "doc": "Maximum video bitrate for media transcoding.\n@deprecated Use :rom:attr:`maxEncoderBitrate` instead of this property.\n          ",
-          "type": "int"
-        },
-        {
           "name": "maxEncoderBitrate",
-          "doc": "Maximum video bitrate for media transcoding.\n<p>\n  This parameter can be used to fine tune the automatic bitrate selection that\n  normally takes place within elements that are able to dynamically change the\n  encoding bitrate according to the conditions of the streaming, such as\n  :rom:cls:`WebRtcEndpoint`.\n</p>\n<p>\n  This should be left as default in most cases, given that remote WebRTC\n  receivers already send feedback to inform the media server about what is the\n  optimal bitrate to send. Otherwise, this parameter could be used for example\n  to limit the total bitrate that is handled by the server, by setting a low\n  maximum output for all endpoints.\n</p>\n<p>\n  Setting a value will only work if done before the media starts to flow.\n</p>\n<ul>\n  <li>Unit: bps (bits per second).</li>\n  <li>Default: 0.</li>\n  <li>\n    0 = unlimited. Encoding performed with bitrate as requested by receivers.\n  </li>\n</ul>\n          ",
+          "doc": "Maximum video bitrate for media transcoding.\n<p>\n  This parameter can be used to fine tune the automatic bitrate selection that\n  normally takes place within elements that are able to dynamically change the\n  encoding bitrate according to the conditions of the streaming, such as\n  :rom:cls:`WebRtcEndpoint`.\n</p>\n<p>\n  This should be left as default in most cases, given that remote WebRTC\n  receivers already send feedback to inform the media server about what is the\n  optimal bitrate to send. Otherwise, this parameter could be used for example\n  to limit the total bitrate that is handled by the server, by setting a low\n  maximum output for all endpoints.\n</p>\n<p>\n  This should be left as default in most cases, given that remote WebRTC\n  receivers already send feedback to inform the media server about what is the\n  optimal bitrate to send. Otherwise, this parameter could be used for example\n  to limit the total bitrate that is handled by the server, by setting a low\n  maximum output for all endpoints.\n</p>\n<p>\n  Setting a value will only work if done before the media starts to flow.\n</p>\n<ul>\n  <li>Unit: bps (bits per second).</li>\n  <li>Default: 0.</li>\n  <li>\n    0 = unlimited. Encoding performed with bitrate as requested by receivers.\n  </li>\n</ul>\n          ",
           "type": "int"
         }
       ],
@@ -324,17 +304,6 @@
         {
           "params": [
             {
-              "name": "bitrate",
-              "doc": "Target video bitrate for media transcoding.",
-              "type": "int"
-            }
-          ],
-          "name": "setOutputBitrate",
-          "doc": "Set the target video bitrate for media transcoding.\n@deprecated Use :rom:attr:`encoderBitrate` instead of this method.\n          "
-        },
-        {
-          "params": [
-            {
               "name": "mediaType",
               "doc": "One of :rom:attr:`MediaType.AUDIO` or :rom:attr:`MediaType.VIDEO`",
               "type": "MediaType",
@@ -428,7 +397,7 @@
     },
     {
       "name": "MediaObject",
-      "doc": "Base interface used to manage capabilities common to all Kurento elements.\n<h4>Properties</h4>\n<ul>\n  <li>\n    <b>id</b>: unique identifier assigned to this <code>MediaObject</code> at\n    instantiation time. :rom:cls:`MediaPipeline` IDs are generated with a GUID\n    followed by suffix <code>_kurento.MediaPipeline</code>.\n    :rom:cls:`MediaElement` IDs are also a GUID with suffix\n    <code>_kurento.{ElementType}</code> and prefixed by parent's ID.\n    <blockquote>\n      <dl>\n        <dt><i>MediaPipeline ID example</i></dt>\n        <dd>\n          <code>\n            907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline\n          </code>\n        </dd>\n        <dt><i>MediaElement ID example</i></dt>\n        <dd>\n          <code>\n            907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline/403da25a-805b-4cf1-8c55-f190588e6c9b_kurento.WebRtcEndpoint\n          </code>\n        </dd>\n      </dl>\n    </blockquote>\n  </li>\n  <li>\n    <b>name</b>: free text intended to provide a friendly name for this\n    <code>MediaObject</code>. Its default value is the same as the ID.\n  </li>\n  <li>\n    <b>tags</b>: key-value pairs intended for applications to associate metadata\n    to this <code>MediaObject</code> instance.\n  </li>\n</ul>\n<p></p>\n<h4>Events</h4>\n<ul>\n  <li>\n    <strong>:rom:evt:`Error`<strong>: reports asynchronous error events. It is recommended to\n    always subscribe a listener to this event, as regular error from the\n    pipeline will be notified through it, instead of through an exception when\n    invoking a method.\n  </li>\n</ul>\n      ",
+      "doc": "Base interface used to manage capabilities common to all Kurento elements.\n<h4>Properties</h4>\n<ul>\n  <li>\n    <b>id</b>: unique identifier assigned to this <code>MediaObject</code> at\n    instantiation time. :rom:cls:`MediaPipeline` IDs are generated with a GUID\n    followed by suffix <code>_kurento.MediaPipeline</code>.\n    :rom:cls:`MediaElement` IDs are also a GUID with suffix\n    <code>_kurento.{ElementType}</code> and prefixed by parent's ID.\n    <blockquote>\n      <dl>\n        <dt><i>MediaPipeline ID example</i></dt>\n        <dd>\n          <code>\n            907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline\n          </code>\n        </dd>\n        <dt><i>MediaElement ID example</i></dt>\n        <dd>\n          <code>\n            907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline/403da25a-805b-4cf1-8c55-f190588e6c9b_kurento.WebRtcEndpoint\n          </code>\n        </dd>\n      </dl>\n    </blockquote>\n  </li>\n  <li>\n    <b>name</b>: free text intended to provide a friendly name for this\n    <code>MediaObject</code>. Its default value is the same as the ID.\n  </li>\n  <li>\n    <b>tags</b>: key-value pairs intended for applications to associate metadata\n    to this <code>MediaObject</code> instance.\n  </li>\n</ul>\n<br />\n<br />\n<h4>Events</h4>\n<ul>\n  <li>\n    <strong>:rom:evt:`Error`</strong>: reports asynchronous error events. It is recommended to\n    always subscribe a listener to this event, as regular error from the\n    pipeline will be notified through it, instead of through an exception when\n    invoking a method.\n  </li>\n</ul>\n      ",
       "abstract": true,
       "properties": [
         {
@@ -448,12 +417,6 @@
           "doc": "Unique identifier of this <code>MediaObject</code>.\n<p>\n  It's a synthetic identifier composed by a GUID and\n  <code>MediaObject</code> type. The ID is prefixed with the parent ID when the\n  object has parent: <i>ID_parent/ID_media-object</i>.\n</p>\n          ",
           "type": "String",
           "final": true
-        },
-        {
-          "name": "childs",
-          "doc": "Children of this <code>MediaObject</code>.\n@deprecated Use children instead.\n          ",
-          "type": "MediaObject[]",
-          "readOnly": true
         },
         {
           "name": "children",
@@ -592,12 +555,12 @@
       "properties": [
         {
           "name": "maxAudioRecvBandwidth",
-          "doc": "Maximum input bitrate, signaled in SDP Offers to WebRTC and RTP senders.\n<p>\n  This is used to put a limit on the bitrate that the remote peer will send to\n  this endpoint. The net effect of setting this parameter is that\n  <i>when Kurento generates an SDP Offer</i>, an 'Application Specific' (AS)\n  maximum bandwidth attribute will be added to the SDP media section:\n  <code>b=AS:{value}</code>.\n</p>\n<p>Note: This parameter has to be set before the SDP is generated.</p>\n<ul>\n  <li>Unit: kbps (kilobits per second).</li>\n  <li>Default: 0.</li>\n  <li>0 = unlimited.</li>\n</ul>\n          ",
+          "doc": "\nMaximum inbound bitrate requested by this endpoint. Signaled to compatible\nWebRTC and RTP senders as part of Kurento's REMB bandwidth estimations, and also\nas an SDP bitrate attribute (<code>b=AS:{value}</code>, see\n<a href='https://datatracker.ietf.org/doc/html/rfc8866#section-5.8'\n  >RFC 8866 Section 5.8. Bandwidth Information</a\n>) in <i>sendrecv</i> and <i>recvonly</i> SDP Offers.\n<ul>\n  <li>Unit: kbps (kilobits per second).</li>\n  <li>Default: 0 (unlimited).</li>\n</ul>\n          ",
           "type": "int"
         },
         {
           "name": "maxVideoRecvBandwidth",
-          "doc": "Maximum input bitrate, signaled in SDP Offers to WebRTC and RTP senders.\n<p>\n  This is used to put a limit on the bitrate that the remote peer will send to\n  this endpoint. The net effect of setting this parameter is that\n  <i>when Kurento generates an SDP Offer</i>, an 'Application Specific' (AS)\n  maximum bandwidth attribute will be added to the SDP media section:\n  <code>b=AS:{value}</code>.\n</p>\n<p>Note: This parameter has to be set before the SDP is generated.</p>\n<ul>\n  <li>Unit: kbps (kilobits per second).</li>\n  <li>Default: 0.</li>\n  <li>0 = unlimited.</li>\n</ul>\n          ",
+          "doc": "\nMaximum inbound bitrate requested by this endpoint. Signaled to compatible\nWebRTC and RTP senders as part of Kurento's REMB bandwidth estimations, and also\nas an SDP bitrate attribute (<code>b=AS:{value}</code>, see\n<a href='https://datatracker.ietf.org/doc/html/rfc8866#section-5.8'\n  >RFC 8866 Section 5.8. Bandwidth Information</a\n>) in <i>sendrecv</i> and <i>recvonly</i> SDP Offers.\n<ul>\n  <li>Unit: kbps (kilobits per second).</li>\n  <li>Default: 0 (unlimited).</li>\n</ul>\n          ",
           "type": "int"
         }
       ],
@@ -826,7 +789,7 @@
         },
         {
           "name": "type",
-          "doc": "Describes the type of mediaserver",
+          "doc": "Describes the type of media server",
           "type": "ServerType"
         },
         {
@@ -836,7 +799,7 @@
         }
       ],
       "name": "ServerInfo",
-      "doc": "Description of the mediaserver"
+      "doc": "Description of the media server"
     },
     {
       "typeFormat": "ENUM",
@@ -1035,12 +998,12 @@
         },
         {
           "name": "sourceDescription",
-          "doc": "Description of source media. Could be emty.",
+          "doc": "Description of source media. Could be empty.",
           "type": "String"
         },
         {
           "name": "sinkDescription",
-          "doc": "Description of sink media. Could be emty.",
+          "doc": "Description of sink media. Could be empty.",
           "type": "String"
         }
       ],
@@ -1117,11 +1080,6 @@
           "type": "StatsType"
         },
         {
-          "name": "timestamp",
-          "doc": "[DEPRECATED: Use timestampMillis] The timestamp associated with this object: Seconds elapsed since the UNIX Epoch (Jan 1, 1970, UTC).",
-          "type": "double"
-        },
-        {
           "name": "timestampMillis",
           "doc": "The timestamp associated with this event: Milliseconds elapsed since the UNIX Epoch (Jan 1, 1970, UTC).",
           "type": "int64"
@@ -1135,16 +1093,6 @@
       "extends": "Stats",
       "properties": [
         {
-          "name": "inputAudioLatency",
-          "doc": "@deprecated\nAudio average measured on the sink pad in nano seconds",
-          "type": "double"
-        },
-        {
-          "name": "inputVideoLatency",
-          "doc": "@deprecated\nVideo average measured on the sink pad in nano seconds",
-          "type": "double"
-        },
-        {
           "name": "inputLatency",
           "doc": "The average time that buffers take to get on the input pads of this element in nano seconds",
           "type": "MediaLatencyStat[]"
@@ -1157,16 +1105,6 @@
       "typeFormat": "REGISTER",
       "extends": "ElementStats",
       "properties": [
-        {
-          "name": "audioE2ELatency",
-          "doc": "@deprecated\nEnd-to-end audio latency measured in nano seconds",
-          "type": "double"
-        },
-        {
-          "name": "videoE2ELatency",
-          "doc": "@deprecated\nEnd-to-end video latency measured in nano seconds",
-          "type": "double"
-        },
         {
           "name": "E2ELatency",
           "doc": "The average end to end latency for each media stream measured in nano seconds",
@@ -1427,7 +1365,7 @@
         },
         {
           "name": "framesDropped",
-          "doc": "Only valid for video. The total number of frames dropped predecode or dropped because the frame missed its display deadline.",
+          "doc": "Only valid for video. The total number of frames dropped pre-decoding or dropped because the frame missed its display deadline.",
           "type": "int64"
         },
         {
@@ -1707,7 +1645,7 @@
         },
         {
           "name": "base64Certificate",
-          "doc": "For example, DER-encoded, base-64 representation of a certifiate.",
+          "doc": "For example, DER-encoded, base-64 representation of a certificate.",
           "type": "String"
         },
         {
@@ -1831,11 +1769,6 @@
           "type": "MediaObject"
         },
         {
-          "name": "timestamp",
-          "doc": "[DEPRECATED: Use timestampMillis] The timestamp associated with this object: Seconds elapsed since the UNIX Epoch (Jan 1, 1970, UTC).",
-          "type": "String"
-        },
-        {
           "name": "timestampMillis",
           "doc": "The timestamp associated with this event: Milliseconds elapsed since the UNIX Epoch (Jan 1, 1970, UTC).",
           "type": "String"
@@ -1875,13 +1808,13 @@
       "properties": [],
       "extends": "Media",
       "name": "MediaSessionTerminated",
-      "doc": "Event raised when a session is terminated. This event has no data."
+      "doc": "\nEvent raised when the endpoint has finished its operation and the connection has\nbeen tore down.\n<p>This event contains no data, and will be raised in these scenarios:</p>\n<ul>\n  <li>\n    An <em>HttpEndpoint</em> has finished serving on its URL, or the URL\n    expired.\n  </li>\n</ul>\n      "
     },
     {
       "properties": [],
       "extends": "Media",
       "name": "MediaSessionStarted",
-      "doc": "Event raised when a session starts. This event has no data."
+      "doc": "\nEvent raised when the endpoint has successfully finished the signaling stage,\nand is ready for establishing a connection.\n<p>\n  This event is a simplified version of the WebRTC's\n  <a\n    href='https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/signalingstatechange_event'\n    >RTCPeerConnection.signalingstatechange event</a\n  >, and can be used to verify that the endpoint has been able to finish\n  negotiations at the signaling plane.\n</p>\n<p>It contains no data, and will be raised in these scenarios:</p>\n<ul>\n  <li>\n    A call to <code>SdpEndpoint.processOffer()</code> has processed a remote\n    <i>SDP Offer</i> and has generated a local <i>SDP Answer</i>. Equivalent to\n    WebRTC's\n    <a\n      href='https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/signalingState#have-local-pranswer'\n      >have-local-pranswer</a\n    >.\n  </li>\n  <li>\n    A call to <code>SdpEndpoint.processAnswer()</code> has processed a remote\n    <i>SDP Answer</i>. Equivalent to WebRTC's\n    <a\n      href='https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/signalingState#have-remote-pranswer'\n      >have-remote-pranswer</a\n    >.\n  </li>\n  <li>\n    An <em>HttpEndpoint</em> has received a <i>GET</i> or <i>POST</i> request.\n  </li>\n</ul>\n<p>\n  Note that <i>SdpEndpoint</i> is the\n  <a\n    href='https://doc-kurento.readthedocs.io/en/latest/features/kurento_modules.html#endpoints'\n    >base class of the RTP classes</a\n  >, so this description applies to both <i>RtpEndpoint</i> and\n  <i>WebRtcEndpoint</i>.\n</p>\n      "
     },
     {
       "properties": [
@@ -1905,7 +1838,7 @@
       ],
       "extends": "RaiseBase",
       "name": "ObjectCreated",
-      "doc": "Indicates that an object has been created on the mediaserver"
+      "doc": "Indicates that an object has been created on the media server"
     },
     {
       "properties": [
@@ -1917,7 +1850,7 @@
       ],
       "extends": "RaiseBase",
       "name": "ObjectDestroyed",
-      "doc": "Indicates that an object has been destroyed on the mediaserver"
+      "doc": "Indicates that an object has been destroyed on the media server"
     },
     {
       "properties": [
