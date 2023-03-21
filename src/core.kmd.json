@@ -387,11 +387,8 @@
       "events": [
         "ElementConnected",
         "ElementDisconnected",
-        "MediaFlowOutStateChange",
         "MediaFlowOutStateChanged",
-        "MediaFlowInStateChange",
         "MediaFlowInStateChanged",
-        "MediaTranscodingStateChange",
         "MediaTranscodingStateChanged"
       ]
     },
@@ -1905,28 +1902,6 @@
         }
       ],
       "extends": "Media",
-      "name": "MediaFlowOutStateChange",
-      "doc": "@deprecated Use <code>MediaFlowOutStateChanged</code> instead."
-    },
-    {
-      "properties": [
-        {
-          "name": "state",
-          "doc": "Current media state",
-          "type": "MediaFlowState"
-        },
-        {
-          "name": "padName",
-          "doc": "Name of the pad which has media",
-          "type": "String"
-        },
-        {
-          "name": "mediaType",
-          "doc": "Type of media that is flowing",
-          "type": "MediaType"
-        }
-      ],
-      "extends": "Media",
       "name": "MediaFlowOutStateChanged",
       "doc": "Fired when the outgoing media flow begins or ends. The event contains:\n      <ul>\n        <li>State: whether the endpoint is sending media (FLOWING) or not (NOT_FLOWING).</li>\n        <li>padName. The name of the pad that changed state.</li>\n        <li>MediaType: The type of media flowing.</li>\n      </ul>"
     },
@@ -1949,52 +1924,8 @@
         }
       ],
       "extends": "Media",
-      "name": "MediaFlowInStateChange",
-      "doc": "@deprecated Use <code>MediaFlowInStateChanged</code> instead."
-    },
-    {
-      "properties": [
-        {
-          "name": "state",
-          "doc": "Current media state",
-          "type": "MediaFlowState"
-        },
-        {
-          "name": "padName",
-          "doc": "Name of the pad which has media",
-          "type": "String"
-        },
-        {
-          "name": "mediaType",
-          "doc": "Type of media that is flowing",
-          "type": "MediaType"
-        }
-      ],
-      "extends": "Media",
       "name": "MediaFlowInStateChanged",
       "doc": "Fired when the incoming media flow begins or ends. The event contains:\n      <ul>\n        <li>State: whether the endpoint is receiving media (FLOWING) or not (NOT_FLOWING).</li>\n        <li>padName. The name of the pad that changed state.</li>\n        <li>MediaType: The type of media flowing.</li>\n      </ul>"
-    },
-    {
-      "properties": [
-        {
-          "name": "state",
-          "doc": "Current transcoding state; either enabled or disabled.",
-          "type": "MediaTranscodingState"
-        },
-        {
-          "name": "binName",
-          "doc": "Name of the GStreamer bin which is processing the media.",
-          "type": "String"
-        },
-        {
-          "name": "mediaType",
-          "doc": "Type of media that is being processed; either audio or video.",
-          "type": "MediaType"
-        }
-      ],
-      "extends": "Media",
-      "name": "MediaTranscodingStateChange",
-      "doc": "@deprecated Use <code>MediaTranscodingStateChanged</code> instead."
     },
     {
       "properties": [
