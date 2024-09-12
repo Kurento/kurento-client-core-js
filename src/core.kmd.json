@@ -1,14 +1,14 @@
 {
   "name": "core",
-  "version": "7.0.0",
-  "kurentoVersion": "7.0.0",
+  "version": "7.1.0",
+  "kurentoVersion": "7.1.0",
   "imports": [],
   "code": {
     "kmd": {
       "java": {
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kms-api-core",
-        "mavenVersion": "7.0.0"
+        "mavenVersion": "7.1.0"
       }
     },
     "api": {
@@ -16,13 +16,13 @@
         "packageName": "org.kurento.client",
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kurento-client",
-        "mavenVersion": "7.0.0"
+        "mavenVersion": "7.1.0"
       },
       "js": {
         "nodeName": "kurento-client-core",
         "npmDescription": "JavaScript Client API for Kurento Media Server",
         "npmGit": "https://github.com/Kurento/kurento-client-core-js.git",
-        "npmVersion": "7.0.0"
+        "npmVersion": "7.1.0"
       }
     },
     "implementation": {
@@ -907,6 +907,8 @@
     {
       "typeFormat": "ENUM",
       "values": [
+        "AV1",
+        "VP9",
         "VP8",
         "H264",
         "RAW"
