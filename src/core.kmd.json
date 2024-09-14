@@ -394,7 +394,7 @@
     },
     {
       "name": "MediaObject",
-      "doc": "Base interface used to manage capabilities common to all Kurento elements.\n<h4>Properties</h4>\n<ul>\n  <li>\n    <b>id</b>: unique identifier assigned to this <code>MediaObject</code> at\n    instantiation time. :rom:cls:`MediaPipeline` IDs are generated with a GUID\n    followed by suffix <code>_kurento.MediaPipeline</code>.\n    :rom:cls:`MediaElement` IDs are also a GUID with suffix\n    <code>_kurento.{ElementType}</code> and prefixed by parent's ID.\n    <blockquote>\n      <dl>\n        <dt><i>MediaPipeline ID example</i></dt>\n        <dd>\n          <code>\n            907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline\n          </code>\n        </dd>\n        <dt><i>MediaElement ID example</i></dt>\n        <dd>\n          <code>\n            907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline/403da25a-805b-4cf1-8c55-f190588e6c9b_kurento.WebRtcEndpoint\n          </code>\n        </dd>\n      </dl>\n    </blockquote>\n  </li>\n  <li>\n    <b>name</b>: free text intended to provide a friendly name for this\n    <code>MediaObject</code>. Its default value is the same as the ID.\n  </li>\n  <li>\n    <b>tags</b>: key-value pairs intended for applications to associate metadata\n    to this <code>MediaObject</code> instance.\n  </li>\n</ul>\n<br />\n<br />\n<h4>Events</h4>\n<ul>\n  <li>\n    <strong>:rom:evt:`Error`</strong>: reports asynchronous error events. It is recommended to\n    always subscribe a listener to this event, as regular error from the\n    pipeline will be notified through it, instead of through an exception when\n    invoking a method.\n  </li>\n</ul>\n      ",
+      "doc": "Base interface used to manage capabilities common to all Kurento elements.\n<h2>Properties</h2>\n<ul>\n  <li>\n    <b>id</b>: unique identifier assigned to this <code>MediaObject</code> at\n    instantiation time. :rom:cls:`MediaPipeline` IDs are generated with a GUID\n    followed by suffix <code>_kurento.MediaPipeline</code>.\n    :rom:cls:`MediaElement` IDs are also a GUID with suffix\n    <code>_kurento.{ElementType}</code> and prefixed by parent's ID.\n    <blockquote>\n      <dl>\n        <dt><i>MediaPipeline ID example</i></dt>\n        <dd>\n          <code>\n            907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline\n          </code>\n        </dd>\n        <dt><i>MediaElement ID example</i></dt>\n        <dd>\n          <code>\n            907cac3a-809a-4bbe-a93e-ae7e944c5cae_kurento.MediaPipeline/403da25a-805b-4cf1-8c55-f190588e6c9b_kurento.WebRtcEndpoint\n          </code>\n        </dd>\n      </dl>\n    </blockquote>\n  </li>\n  <li>\n    <b>name</b>: free text intended to provide a friendly name for this\n    <code>MediaObject</code>. Its default value is the same as the ID.\n  </li>\n  <li>\n    <b>tags</b>: key-value pairs intended for applications to associate metadata\n    to this <code>MediaObject</code> instance.\n  </li>\n</ul>\n<br />\n<br />\n<h4>Events</h4>\n<ul>\n  <li>\n    <strong>:rom:evt:`Error`</strong>: reports asynchronous error events. It is recommended to\n    always subscribe a listener to this event, as regular error from the\n    pipeline will be notified through it, instead of through an exception when\n    invoking a method.\n  </li>\n</ul>\n      ",
       "abstract": true,
       "properties": [
         {
@@ -497,7 +497,7 @@
     },
     {
       "name": "MediaPipeline",
-      "doc": "A pipeline is a container for a collection of :rom:cls:`MediaElements<MediaElement>` and :rom:cls:`MediaMixers<MediaMixer>`.\nIt offers the methods needed to control the creation and connection of elements inside a certain pipeline.\n      ",
+      "doc": "A pipeline is a container for a collection of :rom:cls:`MediaElements<MediaElement>`.\nIt offers the methods needed to control the creation and connection of elements inside a certain pipeline.\n      ",
       "extends": "MediaObject",
       "constructor": {
         "params": [],
@@ -1661,7 +1661,7 @@
       "properties": [
         {
           "name": "name",
-          "doc": "Name of the codec. Must follow this format: <encoding name>/<clock rate>[/<encoding parameters>]",
+          "doc": "Name of the codec. Must follow this format: <code>encoding name/clock rate[encoding parameters]<code>",
           "type": "String",
           "optional": true
         },
