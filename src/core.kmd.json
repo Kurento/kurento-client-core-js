@@ -1,14 +1,14 @@
 {
   "name": "core",
-  "version": "7.1.0",
-  "kurentoVersion": "7.1.0",
+  "version": "7.1.2-dev",
+  "kurentoVersion": "7.1.2-dev",
   "imports": [],
   "code": {
     "kmd": {
       "java": {
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kms-api-core",
-        "mavenVersion": "7.1.0"
+        "mavenVersion": "7.1.2-SNAPSHOT"
       }
     },
     "api": {
@@ -16,13 +16,13 @@
         "packageName": "org.kurento.client",
         "mavenGroupId": "org.kurento",
         "mavenArtifactId": "kurento-client",
-        "mavenVersion": "7.1.0"
+        "mavenVersion": "7.1.2-SNAPSHOT"
       },
       "js": {
         "nodeName": "kurento-client-core",
         "npmDescription": "JavaScript Client API for Kurento Media Server",
         "npmGit": "https://github.com/Kurento/kurento-client-core-js.git",
-        "npmVersion": "7.1.0"
+        "npmVersion": "https://github.com/Kurento/kurento-client-core-js.git"
       }
     },
     "implementation": {
@@ -120,6 +120,18 @@
           },
           "name": "getGstreamerDot",
           "doc": "Returns a string in dot (graphviz) format that represents the gstreamer elements inside the pipeline"
+        },
+        {
+          "params": [
+            {
+              "name": "details",
+              "doc": "Details of graph",
+              "type": "GstreamerDotDetails",
+              "optional": true
+            }
+          ],
+          "name": "dumpGstreamerDot",
+          "doc": "If GST_DEBUG_DUMP_DOT_DIR  environment variable is defined dumps in that directoy a file with the GStreamer dot of the Hub.\n          <p>The element can be queried for certain type of data:</p>\n<ul>\n  <li>SHOW_ALL: default value</li>\n  <li>SHOW_CAPS_DETAILS</li>\n  <li>SHOW_FULL_PARAMS</li>\n  <li>SHOW_MEDIA_TYPE</li>\n  <li>SHOW_NON_DEFAULT_PARAMS</li>\n  <li>SHOW_STATES</li>\n  <li>SHOW_VERBOSE</li>\n</ul>\n          "
         }
       ]
     },
@@ -284,6 +296,18 @@
           ],
           "name": "setVideoFormat",
           "doc": "Set the type of data for the video stream.\n<p>\n  MediaElements that do not support configuration of video capabilities will\n  throw a MEDIA_OBJECT_ILLEGAL_PARAM_ERROR exception\n</p>\n<p>\n  NOTE: This method is not implemented yet by the Media Server to do anything\n  useful.\n</p>\n          "
+        },
+        {
+          "params": [
+            {
+              "name": "details",
+              "doc": "Details of graph",
+              "type": "GstreamerDotDetails",
+              "optional": true
+            }
+          ],
+          "name": "dumpGstreamerDot",
+          "doc": "If GST_DEBUG_DUMP_DOT_DIR  environment variable is defined dumps in that directoy a file with the GStreamer dot of the Media Element.\n          <p>The element can be queried for certain type of data:</p>\n<ul>\n  <li>SHOW_ALL: default value</li>\n  <li>SHOW_CAPS_DETAILS</li>\n  <li>SHOW_FULL_PARAMS</li>\n  <li>SHOW_MEDIA_TYPE</li>\n  <li>SHOW_NON_DEFAULT_PARAMS</li>\n  <li>SHOW_STATES</li>\n  <li>SHOW_VERBOSE</li>\n</ul>\n          "
         },
         {
           "params": [
@@ -526,6 +550,18 @@
           },
           "name": "getGstreamerDot",
           "doc": "Returns a string in dot (graphviz) format that represents the gstreamer elements inside the pipeline"
+        },
+        {
+          "params": [
+            {
+              "name": "details",
+              "doc": "Details of graph",
+              "type": "GstreamerDotDetails",
+              "optional": true
+            }
+          ],
+          "name": "dumpGstreamerDot",
+          "doc": "If GST_DEBUG_DUMP_DOT_DIR  environment variable is defined dumps in that directoy a file with the GStreamer dot of the pipeline"
         }
       ]
     },
@@ -907,6 +943,7 @@
     {
       "typeFormat": "ENUM",
       "values": [
+        "H265",
         "AV1",
         "VP9",
         "VP8",
@@ -921,6 +958,7 @@
       "values": [
         "OPUS",
         "PCMU",
+        "PCMA",
         "RAW"
       ],
       "name": "AudioCodec",
